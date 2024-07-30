@@ -1,90 +1,213 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-    <div class="wrapper">
-      <HelloWorld msg="You can't" />
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/BMI">BMI</RouterLink>
-        <RouterLink to="/score">Score</RouterLink>
-        <RouterLink to="/dice">Dice</RouterLink>
-        <RouterLink to="/mora">Mora</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <!-- <RouterLink to="/enroll">註冊頁</RouterLink> -->
-        <RouterLink to="/test">測試用頁面</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <div class="min-h-screen flex flex-col justify-center items-center w-full">
+    <header class="flex justify-center items-center z-10 bg-white w-[1920px] h-[165px]">
+      <div
+        class="flex justify-between items-end text-[30px] bg-white border-gray-200 w-[1750px] h-[165px]"
+      >
+        <RouterLink to="/" class="flex items-center w-[390px] h-[145px]">
+          <img src="/logo.png" alt="Flowbite Logo" />
+        </RouterLink>
+        <div>
+          <nav class="h-[40px] flex justify-end items-center">
+            <ul
+              class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-[20px] rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"
+            >
+              <li class="vice-nav-button">
+                <RouterLink
+                  class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                  to="/about"
+                >
+                  <img src="/icon/nav-earth-48-filled.png" class="vice-nav-icon" alt="" />
+                  <div class="notes-bolded">Language</div></RouterLink
+                >
+              </li>
+              <li class="relative">
+                <input class="vice-nav-search pl-[20px]" placeholder="搜尋" type="text" />
 
-  <RouterView />
+                <button class="absolute vice-nav-search-button top-[2px] right-[2px]">
+                  <img class="vice-nav-search-icon" src="/icon/tabler-search.png" alt="" />
+                </button>
+              </li>
+              <li class="vice-nav-button">
+                <RouterLink
+                  class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                  to="/about"
+                >
+                  <img src="/icon/nav-map-bold.png" class="vice-nav-icon" alt="" />
+                  <div class="notes-bolded">機場地圖</div></RouterLink
+                >
+              </li>
+              <li class="vice-nav-button">
+                <RouterLink
+                  class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                  to="/about"
+                >
+                  <img src="/icon/nav-question-fill.png" class="vice-nav-icon" alt="" />
+                  <div class="notes-bolded">常見問題</div></RouterLink
+                >
+              </li>
+              <li class="vice-nav-button">
+                <RouterLink
+                  class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                  to="/about"
+                >
+                  <img src="/icon/nav-accessibility.png" class="vice-nav-icon" alt="" />
+                  <div class="notes-bolded">無障礙導覽</div></RouterLink
+                >
+              </li>
+            </ul>
+          </nav>
+          <nav class="flex justify-end items-center">
+            <div>
+              <!-- 漢堡 -->
+              <button
+                data-collapse-toggle="navbar-dropdown"
+                type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                aria-controls="navbar-dropdown"
+                aria-expanded="false"
+              >
+                <span class="sr-only">Open main menu</span>
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 17 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M1 1h15M1 7h15M1 13h15"
+                  />
+                </svg>
+              </button>
+              <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+                <ul
+                  class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-[60px] rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"
+                >
+                  <li class="nav-button">
+                    <RouterLink
+                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                      to="/about"
+                    >
+                      <img src="/icon/nav-airplane-takeoff.png" class="nav-icon" alt="" />
+                      <div class="subtitle">航班資訊</div></RouterLink
+                    >
+                  </li>
+                  <li class="nav-button">
+                    <RouterLink
+                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                      to="/"
+                    >
+                      <img src="/icon/nav-luggage.png" class="nav-icon" alt="" />
+                      <div class="subtitle">搭機指南</div></RouterLink
+                    >
+                  </li>
+                  <li class="nav-button">
+                    <RouterLink
+                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                      to="/"
+                    >
+                      <img
+                        src="/icon/nav-fluent_building-people-24-filled.png"
+                        class="nav-icon"
+                        alt=""
+                      />
+                      <div class="subtitle">機場服務</div></RouterLink
+                    >
+                  </li>
+                  <li class="nav-button">
+                    <RouterLink
+                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                      to="/"
+                    >
+                      <img src="/icon/nav_bus.png" class="nav-icon" alt="" />
+                      <div class="subtitle">交通．指南</div></RouterLink
+                    >
+                  </li>
+                  <li class="nav-button">
+                    <RouterLink
+                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+                      to="/"
+                    >
+                      <img src="/icon/nav_document-solid.png" class="nav-icon" alt="" />
+                      <div class="subtitle">行政專區</div></RouterLink
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <main class="flex-grow flex flex-col items-center">
+      <RouterView />
+    </main>
+    <footer class="bg-gray-200 p-4 text-center w-full"></footer>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+* {
+  box-sizing: border-box;
+  background-color: white;
 }
-
-.logo {
+.group:hover .dropdown-content {
   display: block;
-  margin: 0 auto 2rem;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.dropdown-content {
+  display: none;
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.nav-icon {
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
 }
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+.nav-button {
+  display: flex;
+  justify-content: end;
+  height: 100px;
 }
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.vice-nav-button {
+  display: flex;
+  justify-content: end;
+  height: 35px;
 }
-
-nav a:first-of-type {
-  border: 0;
+.vice-nav-icon {
+  width: 22px;
+  height: 22px;
+  margin-right: 6px;
 }
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.vice-nav-search {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  height: 38px;
+  border-radius: 40px;
+  background-color: #dedede;
+  font-size: 18px;
+}
+.vice-nav-search-icon {
+  width: 20px;
+  height: 20px;
+  background-color: #343557;
+}
+.vice-nav-search-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 33px;
+  height: 33px;
+  background-color: #343557;
+  border-radius: 40px;
 }
 </style>

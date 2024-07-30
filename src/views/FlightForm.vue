@@ -1,7 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-
+import { airData } from '@/stores/AirDate.js'
+const getAirData = airData()
+// 航空公司
+const airname = ref(getAirData.allAirname)
+// 國內航線
+const domestic = ref(getAirData.allDomestic)
+// 國際航線
+const foreign = ref(getAirData.allForeign)
 const AirAPI =
   'https://tdx.transportdata.tw/api/basic/v2/Air/FIDS/Airport/RMQ?%24top=30&%24format=JSON'
 
@@ -42,6 +49,7 @@ const getAPI = async () => {
     console.error('獲取資料錯誤:', error)
   }
 }
+
 //時間過濾航班
 const TimeFilter = (flights) => {
   const NowTime = new Date()
@@ -53,17 +61,19 @@ const TimeFilter = (flights) => {
 
 //用來放按鈕過濾後資料的陣列
 const filterFlights = ref([])
-//按鈕回傳類型設定
+//按鈕回傳分類設定
 const setDisplayType = (type) => {
+  if (!flight.value.departures || !flight.value.arrivals) {
+    console.error('Flight data is not available yet.')
+    return
+  }
+
   if (type === 'internationalArrival') {
     displayType.value = ['Arrival']
     filterFlights.value = TimeFilter(
       flight.value.arrivals.filter(
-        //flight(航班資料)
         (flight) =>
-          //到達台中機場
           flight.ArrivalAirportID === 'RMQ' &&
-          //用foreign(國際航班)中的ID去篩選flight中的ArrivalAirportID(目的是排除國內線)
           foreign.value.some((place) => place.id === flight.DepartureAirportID)
       )
     ).slice(0, 6)
@@ -96,50 +106,11 @@ const setDisplayType = (type) => {
     ).slice(0, 6)
   }
 }
-// 组件挂载时获取数据
 onMounted(() => {
   getAPI().then(() => {
     setDisplayType('internationalArrival')
   })
 })
-
-// 航空公司數據
-const airname = ref([
-  { id: 'B7', name: '立榮航空' },
-  { id: 'AE', name: '華信航空' },
-  { id: 'CX', name: '國泰航空' },
-  { id: 'IT', name: '台灣虎航' },
-  { id: 'JX', name: '星宇航空' },
-  { id: 'MU', name: '中國東方' },
-  { id: 'UO', name: '香港快運' },
-  { id: 'VJ', name: '越捷航空' },
-  { id: 'TW', name: '德威航空' },
-  { id: 'QH', name: '越竹航空' },
-  { id: 'HX', name: '香港航空' }
-])
-
-// 國內航線
-const domestic = ref([
-  { id: 'MZG', name: '澎湖' },
-  { id: 'KNH', name: '金門' },
-  { id: 'LZN', name: '南竿' },
-  { id: 'HUN', name: '花蓮' }
-])
-
-// 國際航線
-const foreign = ref([
-  { id: 'PVG', name: '上海' },
-  { id: 'PQC', name: '富國島' },
-  { id: 'BKK', name: '曼谷' },
-  { id: 'KNH', name: '金門島' },
-  { id: 'HKG', name: '香港' },
-  { id: 'DAD', name: '峴港' },
-  { id: 'SHA', name: '上海' },
-  { id: 'ICN', name: '仁川' },
-  { id: 'PUS', name: '釜山' },
-  { id: 'NKG', name: '南京' },
-  { id: 'HAN', name: '河內' }
-])
 
 // 根據 AirlineID 獲取航空公司名稱
 const getname = (AirlineID) => {
@@ -154,74 +125,89 @@ const getPlaceName = (airportID) => {
 }
 //這是時間格式設定
 const formatTime = (time) => {
-  return time ? time.substring(11, 16) : '時間錯誤'
+  return time ? time.substring(11, 16) : '---'
 }
 </script>
 
 <template>
   <main>
-    <div class="flex mb-4">
-      <!-- 篩選標籤 -->
+    <div>
       <button
         @click="setDisplayType('internationalArrival')"
-        class="flex-1 p-3 m-1 rounded bg-gray-200 hover:bg-gray-400"
+        class="p-3 m-2 rounded hover:bg-green-400 bg-green-200"
       >
-        國際及兩岸航班
+        今日國際及兩岸航線抵達
+      </button>
+      <button
+        @click="setDisplayType('internationalDeparture')"
+        class="p-3 m-2 rounded hover:bg-green-400 bg-green-200"
+      >
+        今日國際及兩岸航線起飛
       </button>
       <button
         @click="setDisplayType('domesticArrival')"
-        class="flex-1 p-3 m-1 rounded bg-gray-200 hover:bg-gray-400"
+        class="p-3 m-2 rounded hover:bg-green-400 bg-green-200"
       >
-        國內航班
-      </button>
-    </div>
-    <div class="flex mb-4">
-      <!-- 抵達和離站 -->
-      <button
-        @click="setDisplayType('Arrival')"
-        class="flex-1 p-3 m-1 rounded bg-gray-200 hover:bg-gray-400"
-      >
-        到達
+        今日國內航線抵達
       </button>
       <button
-        @click="setDisplayType('Departure')"
-        class="flex-1 p-3 m-1 rounded bg-gray-200 hover:bg-gray-400"
+        @click="setDisplayType('domesticDeparture')"
+        class="p-3 m-2 rounded hover:bg-green-400 bg-green-200"
       >
-        起飛
+        今日國內航線起飛
       </button>
     </div>
-    <div class="flex mb-4">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="搜尋航班編號"
-        class="flex-1 p-2 border rounded"
-      />
-      <button @click="handleSearch" class="p-3 m-1 rounded bg-gray-200 hover:bg-gray-400">
-        搜尋
-      </button>
-    </div>
+
     <div>
-      <!-- 航班表格 -->
       <table class="w-full border-collapse">
         <thead>
           <tr>
-            <th>時間</th>
-            <th>航班編號</th>
-            <th>起飛地</th>
+            <th>表定時間</th>
+            <th>實際時間</th>
+            <th>班機編號</th>
+            <th v-if="displayType.includes('Arrival')">出發地</th>
+            <th v-if="displayType.includes('Departure')">目的地</th>
             <th>狀態</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="flightItem in filterFlights" :key="flightItem.FlightNumber">
-            <td>
-              {{ formatTime(flightItem.ScheduleDepartureTime || flightItem.ScheduleArrivalTime) }}
+            <!-- 表定到達時間 -->
+            <td v-if="displayType.includes('Arrival')">
+              {{ formatTime(flightItem.ScheduleArrivalTime) }}
             </td>
-            <td>{{ getname(flightItem.AirlineID) }} {{ flightItem.FlightNumber }}</td>
-            <td>
-              {{ getPlaceName(flightItem.DepartureAirportID || flightItem.ArrivalAirportID) }}
+            <!-- 實際到達時間 -->
+            <td v-if="displayType.includes('Arrival')">
+              {{ formatTime(flightItem.ActualArrivalTime) }}
             </td>
-            <td>{{ flightItem.Status || '預計' }}</td>
+            <!-- 表定出發時間 -->
+            <td v-if="displayType.includes('Departure')">
+              {{ formatTime(flightItem.ScheduleDepartureTime) }}
+            </td>
+            <!-- 實際到達時間 -->
+            <td v-if="displayType.includes('Departure')">
+              {{ formatTime(flightItem.ActualDepartureTime) }}
+            </td>
+            <td>
+              <div class="flex justify-start">
+                <img :src="`/${flightItem.AirlineID}.png`" alt="logo" class="w-5 h-5" />{{
+                  getname(flightItem.AirlineID)
+                }}
+                {{ flightItem.AirlineID }}-{{ flightItem.FlightNumber }}
+              </div>
+            </td>
+            <td v-if="displayType.includes('Arrival')">
+              {{ getPlaceName(flightItem.DepartureAirportID) }}
+            </td>
+            <td v-if="displayType.includes('Departure')">
+              {{ getPlaceName(flightItem.ArrivalAirportID) }}
+            </td>
+            <td v-if="displayType.includes('Arrival')">
+              {{ flightItem.ArrivalRemark }}
+            </td>
+            <td v-if="displayType.includes('Departure')">
+              {{ flightItem.DepartureRemark }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -229,4 +215,15 @@ const formatTime = (time) => {
   </main>
 </template>
 
-<style></style>
+<style>
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #c37eff;
+}
+</style>

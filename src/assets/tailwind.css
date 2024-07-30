@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* 共通CSS */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.headline {
+  font-size: 36px;
+  color: #343557;
+}
+.headline-bolded {
+  font-size: 36px;
+  font-weight: bold;
+  color: black;
+}
+.subtitle {
+  font-size: 30px;
+  color: #343557;
+}
+.content-text {
+  font-size: 24px;
+  color: #343557;
+}
+.content-text-bolded {
+  font-size: 24px;
+  color: #343557;
+  font-weight: bold;
+}
+.notes {
+  font-size: 20px;
+  color: #343557;
+  font-weight: bold;
+}
+.notes-bolded {
+  font-size: 20px;
+  color: #343557;
+  font-weight: bold;
+}
