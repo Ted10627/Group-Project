@@ -24,6 +24,10 @@ body {
   font-size: 24px;
   color: #343557;
 }
+.content-text-black {
+  font-size: 24px;
+  color: black;
+}
 .content-text-bolded {
   font-size: 24px;
   color: #343557;
@@ -38,4 +42,8 @@ body {
   font-size: 20px;
   color: #343557;
   font-weight: bold;
+}
+.small-text {
+  font-size: 16px;
+  color: #5D5D5D;
 }

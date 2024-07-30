@@ -1,3 +1,5 @@
+<script setup></script>
+
 <template>
   <div>
     <div class="headline-bolded mb-2">
@@ -6,7 +8,5 @@
     <img src="/transportation-border-title.png" />
   </div>
 </template>
-
-<script setup></script>
 
 <style scoped></style>

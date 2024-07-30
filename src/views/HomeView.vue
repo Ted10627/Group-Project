@@ -4,6 +4,7 @@ import { airData } from '@/stores/AirDate.js'
 import axios from 'axios'
 import autoPlayCarousel from '@/components/AutoPlayCarousel.vue'
 import mainTitle from '@/components/MainTitle.vue'
+import trafficButton from '@/components/TrafficButton.vue'
 const getAirData = airData()
 // 航空公司
 const airname = ref(getAirData.allAirname)
@@ -412,7 +413,7 @@ const messages = ref(getAirData.allMessages)
                     {{ temperature }}
                     <div class="flex h-[80px] items-center ml-3">
                       <img
-                      :src="`https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/day/${description}.svg`"               
+                        :src="`https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/day/${description}.svg`"
                         alt="天氣圖"
                         class="w-[40px] h-[40px] m-2"
                       />
@@ -447,12 +448,40 @@ const messages = ref(getAirData.allMessages)
     </div>
     <div class="transportation-guide">
       <div class="transportation-main">
-        <div class="w-[full] h-[70px]">
+        <div class="mb-[50px] w-[full] h-[70px]">
           <mainTitle>
             <template #title>交通資訊</template>
           </mainTitle>
         </div>
-        <div class="w-full h-[300px]"></div>
+
+        <div class="flex justify-between w-full h-[300px]">
+          <div class="flex-1">
+            <div class="flex flex-col justify-center">
+              <trafficButton traffic-name="bus"></trafficButton>
+              <div class="flex items-center w-[280px] h-[44px]">
+                <div
+                  class="flex justify-center items-center w-[100px] h-[24px] bg-white rounded-full small-text"
+                >
+                  -------
+                </div>
+                <div class="flex justify-center items-center h-full small-text">台中車站</div>
+              </div>
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="flex flex-col justify-center">
+              <trafficButton traffic-name="speedRail"></trafficButton>
+              <trafficButton traffic-name="taxi"></trafficButton>
+              <trafficButton traffic-name="car"></trafficButton>
+              <trafficButton traffic-name="pin"></trafficButton>
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="flex justify-center">
+              <trafficButton traffic-name="pin"></trafficButton>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div>
@@ -557,6 +586,7 @@ td {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #f6f6f6;
 }
 .transportation-main {
   width: 1400px;
