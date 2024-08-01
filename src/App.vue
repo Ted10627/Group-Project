@@ -108,7 +108,7 @@ import navButton from './components/AppVue/NavButton.vue'
     <main class="flex-grow flex flex-col items-center">
       <RouterView />
     </main>
-    <footer class="bg-gray-200 p-4 text-center w-full"></footer>
+    <footer class="bg-gray-800 p-4 text-center w-full">111111111</footer>
   </div>
 </template>
 

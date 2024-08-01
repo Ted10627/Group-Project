@@ -46,7 +46,7 @@ const button = ref({
       :to="button[props.buttonName].to"
     >
       <img :src="button[props.buttonName].icon" class="nav-icon" alt="" />
-      <div class="subtitle">{{ button[props.buttonName].name }}</div></RouterLink
+      <div class="subtitle text-sm">{{ button[props.buttonName].name }}</div></RouterLink
     >
   </li>
 </template>
