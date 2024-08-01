@@ -215,15 +215,4 @@ const formatTime = (time) => {
   </main>
 </template>
 
-<style>
-th,
-td {
-  padding: 8px;
-  text-align: left;
-  border: 1px solid #ddd;
-}
-
-th {
-  background-color: #c37eff;
-}
-</style>
+<style></style>

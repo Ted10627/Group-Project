@@ -1,12 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import navButton from './components/AppVue/NavButton.vue'
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col justify-center items-center w-full">
-    <header class="flex justify-center items-center z-10 bg-white w-[1920px] h-[165px]">
+  <div class="min-h-screen flex flex-col justify-between items-center w-full">
+    <header class="flex justify-center items-center z-10 bg-white w-full h-[165px]">
       <div
-        class="flex justify-between items-end text-[30px] bg-white border-gray-200 w-[1750px] h-[165px]"
+        class="flex justify-between items-end text-[30px] bg-white border-gray-200 w-full h-[165px]"
       >
         <RouterLink to="/" class="flex items-center w-[390px] h-[145px]">
           <img src="/logo.png" alt="Flowbite Logo" />
@@ -92,55 +93,11 @@ import { RouterLink, RouterView } from 'vue-router'
                 <ul
                   class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-[60px] rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"
                 >
-                  <li class="nav-button">
-                    <RouterLink
-                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
-                      to="/about"
-                    >
-                      <img src="/icon/nav-airplane-takeoff.png" class="nav-icon" alt="" />
-                      <div class="subtitle">航班資訊</div></RouterLink
-                    >
-                  </li>
-                  <li class="nav-button">
-                    <RouterLink
-                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
-                      to="/"
-                    >
-                      <img src="/icon/nav-luggage.png" class="nav-icon" alt="" />
-                      <div class="subtitle">搭機指南</div></RouterLink
-                    >
-                  </li>
-                  <li class="nav-button">
-                    <RouterLink
-                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
-                      to="/"
-                    >
-                      <img
-                        src="/icon/nav-fluent_building-people-24-filled.png"
-                        class="nav-icon"
-                        alt=""
-                      />
-                      <div class="subtitle">機場服務</div></RouterLink
-                    >
-                  </li>
-                  <li class="nav-button">
-                    <RouterLink
-                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
-                      to="/"
-                    >
-                      <img src="/icon/nav_bus.png" class="nav-icon" alt="" />
-                      <div class="subtitle">交通．指南</div></RouterLink
-                    >
-                  </li>
-                  <li class="nav-button">
-                    <RouterLink
-                      class="flex items-center justify-center w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
-                      to="/"
-                    >
-                      <img src="/icon/nav_document-solid.png" class="nav-icon" alt="" />
-                      <div class="subtitle">行政專區</div></RouterLink
-                    >
-                  </li>
+                  <navButton buttonName="one"></navButton>
+                  <navButton buttonName="two"></navButton>
+                  <navButton buttonName="three"></navButton>
+                  <navButton buttonName="four"></navButton>
+                  <navButton buttonName="five"></navButton>
                 </ul>
               </div>
             </div>

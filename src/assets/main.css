@@ -1,7 +1,6 @@
 @import './base.css';
 
 #app {
-  width: full screen;
   margin: 0 auto;
   font-weight: normal;
 }
@@ -10,7 +9,6 @@ a,
 .green {
   text-decoration: none;
   transition: 0.4s;
-  padding: 3px;
 }
 
 /* @media (min-width: 1024px) {
