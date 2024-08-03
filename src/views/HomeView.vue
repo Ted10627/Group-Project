@@ -7,6 +7,9 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
 import trafficButton from '@/components/HomeView/TrafficButton.vue'
 import busInformation from '@/components/HomeView/BusInformation.vue'
 import parkingLot from '@/components/HomeView/ParkingLot.vue'
+import guideCards from '@/components/HomeView/GuideCards.vue'
+import service from '@/components/HomeView/ServiceOptions.vue'
+import announcementCarousel from '@/components/HomeView/AnnouncementCarousel.vue'
 const getAirData = airData()
 // 航空公司
 const airname = ref(getAirData.allAirname)
@@ -26,8 +29,30 @@ const temperature = ref('')
 const description = ref('')
 //取得使用者時間
 const userTime = ref(new Date())
+const ONE_DAY_MS = 24 * 60 * 60 * 1000 // 1 天的毫秒數
+
 const getWeather = async () => {
   try {
+    // 當前時間
+    const now = new Date()
+
+    // 檢查 localStorage 是否過期
+    const storedData = localStorage.getItem('weatherData')
+    const storedTime = localStorage.getItem('lastFetchedTime')
+
+    if (storedData && storedTime) {
+      const dataAge = now - new Date(storedTime)
+      if (dataAge < ONE_DAY_MS) {
+        const { description: storedDescription, temperature: storedTemperature } =
+          JSON.parse(storedData)
+        description.value = storedDescription
+        temperature.value = storedTemperature
+        console.log('使用暫存的天氣:', description.value)
+        console.log('使用暫存的溫度:', temperature.value)
+        return
+      }
+    }
+
     // 取得天氣描述
     const describeRes = await axios.get(describeUrl)
     const describeData =
@@ -35,27 +60,38 @@ const getWeather = async () => {
         .value
     description.value = describeData
 
-    // 取得溫度數據
+    // 取得溫度
     const tempRes = await axios.get(temperatureUrl)
     const tempData = tempRes.data.records.locations[0].location[0].weatherElement[0].time
 
     // 取得當日日期
     const today = new Date().toISOString().split('T')[0]
 
-    // 篩選當日的溫度數據
+    // 篩選當日的溫度
     const todayTemps = tempData.filter((item) => item.dataTime && item.dataTime.startsWith(today))
 
     // 取得最高和最低溫度
     let maxTemp = -Infinity
     let minTemp = Infinity
 
-    todayTemps.forEach((item) => {
-      const temp = parseFloat(item.elementValue[0].value)
-      if (temp > maxTemp) maxTemp = temp
-      if (temp < minTemp) minTemp = temp
-    })
+    if (todayTemps.length > 0) {
+      todayTemps.forEach((item) => {
+        const temp = parseFloat(item.elementValue[0].value)
+        if (temp > maxTemp) maxTemp = temp
+        if (temp < minTemp) minTemp = temp
+      })
+      temperature.value = `${maxTemp}°C / ${minTemp}°C`
+    } else {
+      temperature.value = `-X / X`
+    }
 
-    temperature.value = `${maxTemp}°C / ${minTemp}°C`
+    // 儲存資料到 localStorage
+    localStorage.setItem(
+      'weatherData',
+      JSON.stringify({ description: description.value, temperature: temperature.value })
+    )
+    localStorage.setItem('lastFetchedTime', now.toISOString())
+
     console.log('取得天氣API:', description.value)
     console.log('取得溫度API:', temperature.value)
   } catch (error) {
@@ -233,215 +269,230 @@ onMounted(() => {
   }, 1000)
 })
 const messages = ref(getAirData.allMessages)
+//交通資訊輪流撥放
+const cards = ['card1', 'card2', 'card3']
+const currentIndex = ref(0)
+
+const next = () => {
+  currentIndex.value = (currentIndex.value + 1) % cards.length
+}
+
+const prev = () => {
+  currentIndex.value = (currentIndex.value - 1 + cards.length) % cards.length
+}
 </script>
 
 <template>
-  <main>
-    <div class="flex w-full justify-center">
-      <div class="flex w-full max-w-[1720px] justify-center">
-        <div class="relative flex justify-center w-full h-[916px]">
-          <!-- 圖片切換區 -->
-          <autoPlayCarousel />
-          <!-- 航空資訊 -->
-          <div class="absolute top-[70%] left-[24%] w-[50%] text-2xl shadow-md z-index-2">
-            <div class="flex">
-              <button
-                @click="setCategory('international')"
-                :class="[
-                  category === 'international' ? 'airportMainColor' : 'airportAuxiliaryColor'
-                ]"
-                class="hover:airportMainColor rounded-tl-my flight-button"
-              >
-                國際及兩岸航線
-              </button>
-              <button
-                @click="setCategory('domestic')"
-                :class="[category === 'domestic' ? 'airportMainColor' : 'airportAuxiliaryColor']"
-                class="hover:airportMainColor rounded-tr-my flight-button"
-              >
-                國內航線
-              </button>
-            </div>
-            <div v-if="category" class="flex items-center mt-2">
-              <button
-                @click="setType('Arrival')"
-                :class="[nowType === 'Arrival' ? 'airportMainColor' : 'bg-white']"
-                class="hover:airportMainColor flight-button"
-              >
-                <div class="flex justify-center items-center">
-                  <img
-                    :src="[
-                      nowType === 'Arrival'
-                        ? '/icon/airplane-landing.png'
-                        : '/icon/airplane-landing-ch.png'
-                    ]"
-                  />
-                  抵達
-                </div>
-              </button>
-
-              <button
-                @click="setType('Departure')"
-                :class="[nowType === 'Departure' ? 'airportMainColor' : 'bg-white']"
-                class="hover:airportMainColor flight-button"
-              >
-                <div class="flex justify-center items-center">
-                  <img
-                    :src="[
-                      nowType === 'Departure'
-                        ? '/icon/airplane-takeoff.png'
-                        : '/icon/airplane-takeoff-ch.png'
-                    ]"
-                  />
-                  起飛
-                </div>
-              </button>
-              <div
-                class="p-5 airportAuxiliaryColor w-[500px] h-[110px] flex items-center border relative"
-              >
-                <input
-                  v-model="searchQuery"
-                  type="text"
-                  placeholder="搜尋航班編號"
-                  class="p-2 airportAuxiliaryColor flex-1 h-[60px] w-[460px] border-width border-2 rounded"
-                />
+  <div class="flex w-full justify-center bg-white">
+    <div class="flex w-full max-w-[1720px] justify-center">
+      <div class="relative flex justify-center w-full h-[916px]">
+        <!-- 圖片切換區 -->
+        <autoPlayCarousel />
+        <!-- 航空資訊 -->
+        <div
+          class="absolute w-full max-w-[1080px] top-[70%] left-[22%] text-2xl shadow-md z-index-2"
+        >
+          <div class="flex">
+            <button
+              type="button"
+              @click="setCategory('international')"
+              :class="[category === 'international' ? 'airportMainColor' : 'airportAuxiliaryColor']"
+              class="hover:airportMainColor rounded-tl-my flight-button"
+            >
+              國際及兩岸航線
+            </button>
+            <button
+              type="button"
+              @click="setCategory('domestic')"
+              :class="[category === 'domestic' ? 'airportMainColor' : 'airportAuxiliaryColor']"
+              class="hover:airportMainColor rounded-tr-my flight-button"
+            >
+              國內航線
+            </button>
+          </div>
+          <div v-if="category" class="flex items-center mt-2">
+            <button
+              @click="setType('Arrival')"
+              :class="[nowType === 'Arrival' ? 'airportMainColor' : 'bg-white']"
+              class="hover:airportMainColor flight-button"
+            >
+              <div class="flex justify-center items-center">
                 <img
-                  src="/icon/search.png"
-                  class="w-[40px] h-[40px] cursor-pointer absolute right-10"
-                  @click="searchFlights"
+                  :src="[
+                    nowType === 'Arrival'
+                      ? '/icon/airplane-landing.png'
+                      : '/icon/airplane-landing-ch.png'
+                  ]"
                 />
+                抵達
               </div>
-            </div>
-            <div v-if="nowType" class="mt-2">
-              <table class="w-full border-collapse">
-                <thead class="h-[65px]">
-                  <tr class="airportAuxiliaryColor-2">
-                    <th class="text-center from-items-1">
-                      <div class="flex justify-center items-center border-r-2">時間</div>
-                    </th>
-                    <th class="text-center from-items-2">
-                      <div class="flex justify-center items-center border-r-2">班機編號</div>
-                    </th>
-                    <th v-if="displayType.includes('Arrival')" class="text-center from-items-1">
-                      <div class="flex justify-center items-center border-r-2">出發地</div>
-                    </th>
-                    <th v-if="displayType.includes('Departure')" class="text-center from-items-1">
-                      <div class="flex justify-center items-center border-r-2">目的地</div>
-                    </th>
-                    <th class="text-center">狀態</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white">
-                  <tr v-if="filterFlights.length === 0">
-                    <td colspan="5" class="text-center text-[30px] py-4 bg-slate-200">查無資料</td>
-                  </tr>
-                  <tr
-                    v-for="flightItem in filterFlights.slice(0, showMoreCount)"
-                    :key="flightItem.FlightNumber"
-                    class="border shadow-md p-2 h-[65px]"
-                    :class="{
-                      'text-red-600':
-                        flightItem.ArrivalRemark === '延誤' ||
-                        flightItem.ArrivalRemark === '取消' ||
-                        flightItem.DepartureRemark === '延誤' ||
-                        flightItem.DepartureRemark === '取消',
-                      'text-black': !(
-                        flightItem.ArrivalRemark === '延誤' ||
-                        flightItem.ArrivalRemark === '取消' ||
-                        flightItem.DepartureRemark === '延誤' ||
-                        flightItem.DepartureRemark === '取消'
-                      )
-                    }"
-                  >
-                    <!-- 表定到達時間 -->
-                    <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
-                      {{ formatTime(flightItem.ScheduleArrivalTime) }}
-                    </td>
-                    <!-- 表定出發時間 -->
-                    <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
-                      {{ formatTime(flightItem.ScheduleDepartureTime) }}
-                    </td>
-                    <td class="from-items-2">
-                      <div class="flex items-center justify-center">
-                        <img
-                          :src="`/AviationLogo/${flightItem.AirlineID}.png`"
-                          alt="logo"
-                          class="w-5 h-5"
-                        />
-                        <span class="ml-2">{{ getname(flightItem.AirlineID) }}</span>
-                        <span class="ml-2"
-                          >{{ flightItem.AirlineID }}-{{ flightItem.FlightNumber }}</span
-                        >
-                      </div>
-                    </td>
-                    <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
-                      {{ getPlaceName(flightItem.DepartureAirportID) }}
-                    </td>
-                    <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
-                      {{ getPlaceName(flightItem.ArrivalAirportID) }}
-                    </td>
-                    <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
-                      {{ flightItem.ArrivalRemark }}
-                    </td>
-                    <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
-                      {{ flightItem.DepartureRemark }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="flex justify-center items-center bg-white bg-opacity-50 h-[80px]">
-                <button @click="showMore" class="h-[40px]">顯示更多航班</button>
-                <img src="/icon/park-right.png" alt="" />
+            </button>
+
+            <button
+              @click="setType('Departure')"
+              :class="[nowType === 'Departure' ? 'airportMainColor' : 'bg-white']"
+              class="hover:airportMainColor flight-button"
+            >
+              <div class="flex justify-center items-center">
+                <img
+                  :src="[
+                    nowType === 'Departure'
+                      ? '/icon/airplane-takeoff.png'
+                      : '/icon/airplane-takeoff-ch.png'
+                  ]"
+                />
+                起飛
               </div>
+            </button>
+            <div
+              class="relative p-5 airportAuxiliaryColor w-[500px] h-[110px] flex items-center border"
+            >
+              <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="搜尋航班編號"
+                class="p-2 airportAuxiliaryColor flex-1 h-[60px] w-[460px] border-width border-2 rounded"
+              />
+              <img
+                src="/icon/search.png"
+                class="w-[40px] h-[40px] cursor-pointer absolute right-10"
+                @click="searchFlights"
+              />
             </div>
           </div>
-          <!-- 天氣卡 -->
-          <div class="text-2xl absolute top-[22%] right-[0%]">
-            <table class="w-[500px]">
-              <thead class="h-[80px]">
-                <tr class="airportAuxiliaryColor-2 flex justify-center items-center rounded-time">
-                  <th class="text-center">
-                    <div class="flex justify-center items-center from-items-1 h-[25px]">
-                      台中
-                      {{
-                        userTime.toLocaleTimeString('zh-TW', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hourCycle: 'h23'
-                        })
-                      }}
-                      <div class="flex ml-14 items-center border-r-2 h-[20px]"></div>
-                    </div>
+          <div v-if="nowType" class="mt-2">
+            <table class="w-full border-collapse">
+              <thead class="h-[65px]">
+                <tr class="airportAuxiliaryColor-2">
+                  <th class="text-center from-items-1">
+                    <div class="flex justify-center items-center border-r-2">時間</div>
                   </th>
-                  <th class="text-center">
-                    <div class="flex justify-center items-center">
-                      {{ temperature }}
-                      <div class="flex h-[80px] items-center ml-3">
-                        <img
-                          :src="`https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/day/${description}.svg`"
-                          alt="天氣圖"
-                          class="w-[40px] h-[40px] m-2"
-                        />
-                      </div>
-                    </div>
+                  <th class="text-center from-items-2">
+                    <div class="flex justify-center items-center border-r-2">班機編號</div>
                   </th>
+                  <th v-if="displayType.includes('Arrival')" class="text-center from-items-1">
+                    <div class="flex justify-center items-center border-r-2">出發地</div>
+                  </th>
+                  <th v-if="displayType.includes('Departure')" class="text-center from-items-1">
+                    <div class="flex justify-center items-center border-r-2">目的地</div>
+                  </th>
+                  <th class="text-center">狀態</th>
                 </tr>
               </thead>
+              <tbody class="bg-white">
+                <tr v-if="filterFlights.length === 0">
+                  <td colspan="5" class="text-center text-[30px] py-4 bg-slate-200">查無資料</td>
+                </tr>
+                <tr
+                  v-for="flightItem in filterFlights.slice(0, showMoreCount)"
+                  :key="flightItem.FlightNumber"
+                  class="border shadow-md p-2 h-[65px]"
+                  :class="{
+                    'text-red-600':
+                      flightItem.ArrivalRemark === '延誤' ||
+                      flightItem.ArrivalRemark === '取消' ||
+                      flightItem.DepartureRemark === '延誤' ||
+                      flightItem.DepartureRemark === '取消',
+                    'text-black': !(
+                      flightItem.ArrivalRemark === '延誤' ||
+                      flightItem.ArrivalRemark === '取消' ||
+                      flightItem.DepartureRemark === '延誤' ||
+                      flightItem.DepartureRemark === '取消'
+                    )
+                  }"
+                >
+                  <!-- 表定到達時間 -->
+                  <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
+                    {{ formatTime(flightItem.ScheduleArrivalTime) }}
+                  </td>
+                  <!-- 表定出發時間 -->
+                  <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
+                    {{ formatTime(flightItem.ScheduleDepartureTime) }}
+                  </td>
+                  <td class="from-items-2">
+                    <div class="flex items-center justify-center">
+                      <img
+                        :src="`https://www.tca.gov.tw/upload/webstyle_7_default/img/air_logo/${flightItem.AirlineID}.png`"
+                        alt="logo"
+                        class="w-5 h-5"
+                      />
+                      <span class="ml-2">{{ getname(flightItem.AirlineID) }}</span>
+                      <span class="ml-2"
+                        >{{ flightItem.AirlineID }}-{{ flightItem.FlightNumber }}</span
+                      >
+                    </div>
+                  </td>
+                  <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
+                    {{ getPlaceName(flightItem.DepartureAirportID) }}
+                  </td>
+                  <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
+                    {{ getPlaceName(flightItem.ArrivalAirportID) }}
+                  </td>
+                  <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
+                    {{ flightItem.ArrivalRemark }}
+                  </td>
+                  <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
+                    {{ flightItem.DepartureRemark }}
+                  </td>
+                </tr>
+              </tbody>
             </table>
+            <div class="flex justify-center items-center bg-white bg-opacity-50 h-[80px]">
+              <button @click="showMore" class="h-[40px]">顯示更多航班</button>
+              <img src="/icon/park-right.png" alt="" />
+            </div>
           </div>
-          <!-- 公告區 -->
-          <div class="text-2xl absolute top-[5%] left-[20%]">
-            <div class="flex w-full max-w-[1080px] h-[100px] announcement shadow-xl">
-              <div
-                class="flex justify-center items-center w-full max-w-[220px] h-[100px] announcement-title content-text"
-              >
-                <img src="/icon/announcement.png" class="w-[44px] h-[44px]" />公告資訊
-              </div>
-              <div class="flex ml-8 marquee-container">
-                <div class="marquee-content">
-                  <div v-for="(message, index) in messages" :key="index" class="marquee-item">
-                    {{ message }}
+        </div>
+        <!-- 天氣卡 -->
+        <div class="text-2xl absolute top-[22%] right-[0%]">
+          <table class="w-[500px]">
+            <thead class="h-[80px]">
+              <tr class="airportAuxiliaryColor-2 flex justify-center items-center rounded-time">
+                <th class="text-center">
+                  <div class="flex justify-center items-center from-items-1 h-[25px]">
+                    台中
+                    {{
+                      userTime.toLocaleTimeString('zh-TW', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hourCycle: 'h23'
+                      })
+                    }}
+                    <div class="flex ml-14 items-center border-r-2 h-[20px]"></div>
                   </div>
+                </th>
+                <th class="text-center">
+                  <div class="flex justify-center items-center">
+                    {{ temperature }}
+                    <div class="flex h-[80px] items-center ml-3">
+                      <img
+                        :src="`https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/day/${description}.svg`"
+                        alt="天氣圖"
+                        class="w-[40px] h-[40px] m-2"
+                      />
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <!-- 公告區 -->
+        <div class="text-2xl absolute top-[5%] left-[20%]">
+          <div class="flex w-full max-w-[1080px] h-[80px] announcement shadow-xl">
+            <div
+              class="flex justify-center items-center w-full max-w-[220px] announcement-title content-text"
+            >
+              <img src="/icon/announcement.png" class="w-[44px] h-[44px]" />公告資訊
+            </div>
+            <div class="flex ml-8 relative overflow-hidden w-[750px]">
+              <div class="marquee-content">
+                <div
+                  v-for="(message, index) in messages"
+                  :key="index"
+                  class="flex items-center min-w-[100%]"
+                >
+                  {{ message }}
                 </div>
               </div>
             </div>
@@ -449,63 +500,145 @@ const messages = ref(getAirData.allMessages)
         </div>
       </div>
     </div>
-
-    <!-- 地圖區 -->
-    <div class="flex w-full justify-center translate-y-[-100px] overflow-hidden">
-      <img class="z-index-0" src="/首頁-導覽地圖.png" alt="" />
-    </div>
-    <!-- 交通資訊 -->
-    <div class="flex w-full h-[490px] justify-center items-center bg-[#f6f6f6] ">
-      <div class="transportation-main">
-        <div class="mb-[50px] w-full h-[70px]">
-          <mainTitle>
-            <template #title>交通資訊</template>
-          </mainTitle>
+  </div>
+  <!-- 地圖區 -->
+  <div class="flex w-full justify-center translate-y-[-100px] bg-white overflow-hidden">
+    <img class="z-index-0" src="/image/bg-map.png" alt="" />
+  </div>
+  <!-- 交通資訊 -->
+  <div class="flex w-full h-[490px] justify-center items-center bg-[#f6f6f6]">
+    <div class="w-full max-w-[1400px] h-[370px]">
+      <div class="mb-[50px] w-full h-[70px]">
+        <mainTitle>
+          <template #title>交通資訊</template>
+        </mainTitle>
+      </div>
+      <div class="flex justify-between w-full h-[300px]">
+        <!-- 公車班次 -->
+        <div class="flex-1 border-r border-gray-500">
+          <div class="bus-list">
+            <div class="flex flex-col justify-center">
+              <trafficButton traffic-name="bus"></trafficButton>
+              <busInformation traffic-name="bus1"></busInformation>
+              <busInformation traffic-name="bus2"></busInformation>
+              <busInformation traffic-name="bus3"></busInformation>
+              <busInformation traffic-name="bus4"></busInformation>
+            </div>
+          </div>
         </div>
-        <div class="flex justify-between w-full h-[300px]">
-          <!-- 公車班次 -->
-          <div class="flex-1 border-r border-gray-500">
-            <div class="bus-list">
-              <div class="flex flex-col justify-center">
-                <trafficButton traffic-name="bus"></trafficButton>
-                <busInformation traffic-name="bus1"></busInformation>
-                <busInformation traffic-name="bus2"></busInformation>
-                <busInformation traffic-name="bus3"></busInformation>
-                <busInformation traffic-name="bus4"></busInformation>
-              </div>
+        <!-- 其他交通 -->
+        <div class="flex-1">
+          <div class="bus-list">
+            <div class="flex flex-col justify-center">
+              <trafficButton traffic-name="speedRail"></trafficButton>
+              <trafficButton traffic-name="taxi"></trafficButton>
+              <trafficButton traffic-name="car"></trafficButton>
+              <trafficButton traffic-name="pin"></trafficButton>
             </div>
           </div>
-          <!-- 其他交通 -->
-          <div class="flex-1">
-            <div class="bus-list">
-              <div class="flex flex-col justify-center">
-                <trafficButton traffic-name="speedRail"></trafficButton>
-                <trafficButton traffic-name="taxi"></trafficButton>
-                <trafficButton traffic-name="car"></trafficButton>
-                <trafficButton traffic-name="pin"></trafficButton>
-              </div>
+        </div>
+        <!-- 停車場資訊 -->
+        <div class="flex-1">
+          <div
+            class="flex-col w-full h-full py-[20px] px-[60px] background-light-gray rounded-[20px] content-text-black"
+          >
+            <div class="flex items-center w-full h-[44px]">
+              停車場<img
+                class="flex max-w-[24px] w-full h-[24px] ml-2"
+                src="/icon/page-right.png"
+                alt="icon"
+              />
             </div>
-          </div>
-          <!-- 停車場資訊 -->
-          <div class="flex-1">
-            <div
-              class="flex-col w-full h-full py-[20px] px-[60px] background-light-gray rounded-[20px] content-text-black"
-            >
-              <div class="flex items-center w-full h-[44px]">
-                停車場<img
-                  class="flex max-w-[24px] w-full h-[24px] ml-2"
-                  src="/icon/page-right.png"
-                  alt="icon"
-                />
-              </div>
-              <parkingLot traffic-name="state1"></parkingLot>
-              <parkingLot traffic-name="state2"></parkingLot>
-            </div>
+            <parkingLot traffic-name="state1"></parkingLot>
+            <parkingLot traffic-name="state2"></parkingLot>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </div>
+  <!-- 搭機指南 -->
+  <div class="relative flex justify-center items-end w-full h-[850px] bg-[#f6f6f6]">
+    <div
+      class="absolute w-full max-w-[495px] h-[495px] left-0 top-10 bg-[#471C87] bg-opacity-10 rounded-r-[50px]"
+    ></div>
+    <div
+      class="flex justify-between w-full max-w-[1600px] h-[700px] py-[100px] px-[60px] rounded-t-[50px] bg-white"
+    >
+      <div class="flex">
+        <mainTitle>
+          <template #title>搭機指南</template>
+        </mainTitle>
+      </div>
+      <div class="relative w-full max-w-[1200px] h-[500px] overflow-hidden">
+        <div
+          class="flex transition-transform duration-700 ease-in-out"
+          :style="{ transform: `translateX(-${currentIndex * 41}%)` }"
+        >
+          <guideCards v-for="(card, index) in cards" :key="index" :guideName="card" />
+        </div>
+        <div
+          class="absolute top-0 -right-1 w-[87px] h-full bg-gradient-to-r from-transparent to-white"
+        ></div>
+        <button
+          @click="prev"
+          class="flex justify-center items-center absolute w-[84px] h-[84px] rounded-full top-[44%] left-1 bg-[rgba(255,255,255,0.5)] shadow-[0px_0px_6px_rgba(0,0,0,0.25)]"
+        >
+          <img class="w-[28px] h-[28px]" src="/icon/guide-left-arrow.png" alt="左按鈕" />
+        </button>
+        <button
+          @click="next"
+          class="flex justify-center items-center absolute w-[84px] h-[84px] rounded-full top-[44%] right-1 bg-[rgba(255,255,255,0.5)] shadow-[0px_0px_6px_rgba(0,0,0,0.25)]"
+        >
+          <img class="w-[28px] h-[28px]" src="/icon/guide-right-arrow.png" alt="右按鈕" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- 旅客服務專區 -->
+  <div class="relative flex justify-center w-full h-[1450px] py-[150px]">
+    <div class="w-full max-w-[1600px] h-full bg-white z-10">
+      <div class="flex-1 w-full h-[50%] z-10 px-[110px] py-[100px]">
+        <div class="mb-[80px]">
+          <mainTitle>
+            <template #title>旅客服務專區</template>
+          </mainTitle>
+        </div>
+        <div class="flex justify-between w-full content-text">
+          <div class="flex-col flex w-full mr-[80px]">
+            <service service-name="s1"></service>
+            <service service-name="s2"></service>
+            <service service-name="s3"></service>
+          </div>
+          <div class="w-full">
+            <service service-name="s4"></service>
+            <service service-name="s5"></service>
+            <service service-name="s6"></service>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 w-full h-[50%] z-10 px-[110px] py-[100px]">
+        <div class="mb-[80px]">
+          <mainTitle>
+            <template #title>政府公告</template>
+          </mainTitle>
+        </div>
+        <announcementCarousel>
+          <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-1.png" alt="公告-1" />
+          <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-2.png" alt="公告-2" />
+          <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-3.png" alt="公告-3" />
+          <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-4.png" alt="公告-4" />
+          <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-5.png" alt="公告-5" />
+          <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-6.png" alt="公告-6" />
+        </announcementCarousel>
+      </div>
+    </div>
+    <!-- 背景圖 -->
+    <img
+      class="absolute w-full h-full top-0 left-0 object-cover object-center z-0"
+      src="/image/service-area-background.png"
+      alt="旅客服務底圖"
+    />
+  </div>
 </template>
 
 <style>
@@ -570,12 +703,6 @@ td {
   border-bottom-right-radius: 30px;
   position: relative;
 }
-.marquee-container {
-  position: relative;
-  overflow: hidden;
-  width: 750px;
-  height: 100px;
-}
 
 .marquee-content {
   display: flex;
@@ -583,17 +710,7 @@ td {
   animation: marquee 25s linear infinite;
   height: 100%;
   font-size: 24px;
-  font-family: 'Noto Sans TC', sans-serif;
   font-weight: bold;
-}
-
-.marquee-item {
-  display: flex;
-  align-items: center;
-  height: 100px;
-  min-width: 100%;
-  text-align: left;
-  padding-left: 20px;
 }
 .transportation-guide {
   width: 100%;
@@ -602,11 +719,6 @@ td {
   justify-content: center;
   align-items: center;
   background-color: #f6f6f6;
-}
-.transportation-main {
-  max-width: 1400px;
-  width: 100%;
-  height: 370px;
 }
 
 @keyframes marquee {
@@ -629,5 +741,15 @@ td {
   100% {
     transform: translateX(-300%);
   }
+}
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
 }
 </style>

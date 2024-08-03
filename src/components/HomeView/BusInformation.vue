@@ -51,10 +51,10 @@ const traffic = ref({
     </div>
     <div class="flex-3">
       <div class="flex justify-center items-center h-full small-text">
-        <div class="flex justify-center items-start text-[24px]">
+        <!-- <div class="flex justify-center items-start text-[24px]">
           {{ traffic[props.trafficName].time }}
         </div>
-        分
+        分 -->
       </div>
     </div>
   </div>

@@ -18,7 +18,8 @@ body {
   color: black;
 }
 .subtitle {
-  font-size: 30px;
+  /* 30px */
+  font-size: 1.875rem;
   color: #343557;
 }
 .content-text {
@@ -59,8 +60,23 @@ body {
 }
 
 /* 顏色設計規範 */
+.air-purple {
+  background-color: #471c87;
+}
+.air-yellow {
+  background-color: #fdd900;
+}
+.air-orange {
+  background-color: #f59801;
+}
+.bg-gray {
+  background-color: #f6f6f6;
+}
 .background-light-gray {
   background-color: #e1e1e1;
+}
+.white{
+  background-color: #FFFFFF;
 }
 .warning-green {
   background-color: #11bc37;
