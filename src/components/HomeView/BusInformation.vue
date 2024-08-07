@@ -51,10 +51,13 @@ const traffic = ref({
     </div>
     <div class="flex-3">
       <div class="flex justify-center items-center h-full small-text">
+<<<<<<< Updated upstream
         <!-- <div class="flex justify-center items-start text-[24px]">
           {{ traffic[props.trafficName].time }}
         </div>
         分 -->
+=======
+>>>>>>> Stashed changes
       </div>
     </div>
   </div>

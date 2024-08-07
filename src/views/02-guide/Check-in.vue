@@ -3,7 +3,17 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
 </script>
 
 <template>
+<<<<<<< Updated upstream
   <img class="max-w-full w-auto" src="/image/banner-check-in.png" alt="報到及通關" />
+=======
+  <div
+    class="banner-guide w-full max-w-[1920px] max-w-auto h-[120px] sm:h-[200px] lg:h-[400px] flex items-center bg-cover"
+  >
+    <p class="text-xl font-bold sm:text-4xl lg:text-6xl w-[1260px] px-5 mx-auto text-white">
+      報到及通關
+    </p>
+  </div>
+>>>>>>> Stashed changes
   <div class="px-5">
     <div class="w-full max-w-[1260px] flex flex-col gap-5 lg:gap-12 m-auto py-10">
       <div class="w-full text-sm lg:text-2xl">首頁>搭機指南>報到及通關</div>
@@ -46,4 +56,12 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
   </div>
 </template>
 
+<<<<<<< Updated upstream
 <style></style>
+=======
+<style>
+.banner-guide {
+  background-image: url(/public/image/banner-guide.png);
+}
+</style>
+>>>>>>> Stashed changes

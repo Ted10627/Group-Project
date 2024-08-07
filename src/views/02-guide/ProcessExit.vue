@@ -3,6 +3,7 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
 </script>
 
 <template>
+<<<<<<< Updated upstream
   <img class="max-w-full w-auto" src="/image/banner-process.png" alt="國際線搭機流程"/>
   <div class="px-5">
     <div class=" w-full max-w-[1260px] flex flex-col gap-5 lg:gap-12 m-auto py-10">
@@ -10,11 +11,30 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
       <div class="flex w-full">
         <button
           class="flex-1 rounded-l-[40px] shadow-xl p-2 lg:p-5 air-purple text-xl lg:text-3xl text-[#FFFFFF] "
+=======
+  <div
+    class="banner-guide w-full max-w-[1920px] max-w-auto h-[120px] sm:h-[200px] lg:h-[400px] flex items-center bg-cover"
+  >
+    <p class="text-xl font-bold sm:text-4xl lg:text-6xl w-[1260px] px-5 mx-auto text-white">
+      國際線搭機流程
+    </p>
+  </div>
+  <div class="px-5">
+    <div class="w-full max-w-[1260px] flex flex-col gap-5 lg:gap-12 m-auto py-10">
+      <div class="w-full text-sm lg:text-2xl">首頁>搭機指南>國際線搭機流程>出境流程</div>
+      <div class="flex w-full">
+        <button
+          class="flex-1 rounded-l-[40px] shadow-xl p-2 lg:p-5 air-purple text-xl lg:text-3xl text-[#FFFFFF]"
+>>>>>>> Stashed changes
         >
           出境
         </button>
         <RouterLink
+<<<<<<< Updated upstream
           to="/process-entry"
+=======
+          :to="{ name: 'process-entry' }"
+>>>>>>> Stashed changes
           class="flex-1 rounded-r-[40px] shadow-xl p-2 lg:p-5 white text-xl lg:text-3xl text-[#471C87] text-center"
         >
           <button>入境</button>
@@ -36,7 +56,13 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
           </div>
           <div>
             <p class="text-xl lg:text-3xl text-[#471C87]">出境必備證件 :</p>
+<<<<<<< Updated upstream
             <p class="text-sm lg:text-2xl">1.本國籍旅客:護照、登機證。<br />2.外籍旅客：護照、登機證。</p>
+=======
+            <p class="text-sm lg:text-2xl">
+              1.本國籍旅客:護照、登機證。<br />2.外籍旅客：護照、登機證。
+            </p>
+>>>>>>> Stashed changes
           </div>
           <div>
             <a href="" class="text-xl lg:text-2xl">國際線入境虛擬導覽></a>
@@ -48,4 +74,12 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
   </div>
 </template>
 
+<<<<<<< Updated upstream
 <style></style>
+=======
+<style>
+.banner-guide {
+  background-image: url(/public/image/banner-guide.png);
+}
+</style>
+>>>>>>> Stashed changes

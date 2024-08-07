@@ -10,6 +10,35 @@ import parkingLot from '@/components/HomeView/ParkingLot.vue'
 import guideCards from '@/components/HomeView/GuideCards.vue'
 import service from '@/components/HomeView/ServiceOptions.vue'
 import announcementCarousel from '@/components/HomeView/AnnouncementCarousel.vue'
+<<<<<<< Updated upstream
+=======
+import { gsap } from 'gsap'
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
+
+gsap.registerPlugin(MotionPathPlugin)
+
+const planeRef = ref(null)
+
+onMounted(() => {
+  gsap.to(planeRef.value, {
+    duration: 10,
+    motionPath: {
+      path: [
+        { x: 0, y: 0 },
+        { x: -200, y: -100 },
+        { x: -400, y: 0 },
+        { x: -300, y: 350 },
+        { x: 400, y: -50 },
+        { x: 1000, y: -600 }
+      ],
+      type: 'quadratic',
+      autoRotate: true
+    },
+    repeat: -1,
+    ease: 'linear'
+  })
+})
+>>>>>>> Stashed changes
 const getAirData = airData()
 // 航空公司
 const airname = ref(getAirData.allAirname)
@@ -19,17 +48,20 @@ const domestic = ref(getAirData.allDomestic)
 const foreign = ref(getAirData.allForeign)
 //天氣描述
 const describeUrl =
-  'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-073?Authorization=CWA-EF35A2DE-8C81-4411-94CF-4E2D13A3DC31&limit=1&format=JSON&locationName=%E6%B2%99%E9%B9%BF%E5%8D%80&elementName=Wx'
+  'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-073?Authorization=CWA-AB77557D-8FFC-412D-91D5-8D4235C1406D&limit=1&format=JSON&locationName=%E6%B2%99%E9%B9%BF%E5%8D%80&elementName=Wx'
 //取得攝氏度
 const temperatureUrl =
-  'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-073?Authorization=CWA-EF35A2DE-8C81-4411-94CF-4E2D13A3DC31&limit=1&format=JSON&locationName=%E6%B2%99%E9%B9%BF%E5%8D%80&elementName=AT'
+  'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-073?Authorization=CWA-AB77557D-8FFC-412D-91D5-8D4235C1406D&limit=1&format=JSON&locationName=%E6%B2%99%E9%B9%BF%E5%8D%80&elementName=AT'
 //溫度
 const temperature = ref('')
 //天氣描述
 const description = ref('')
 //取得使用者時間
 const userTime = ref(new Date())
+<<<<<<< Updated upstream
 const ONE_DAY_MS = 24 * 60 * 60 * 1000 // 1 天的毫秒數
+=======
+>>>>>>> Stashed changes
 
 const getWeather = async () => {
   try {
@@ -55,11 +87,9 @@ const getWeather = async () => {
 
     // 取得天氣描述
     const describeRes = await axios.get(describeUrl)
-    const describeData =
-      describeRes.data.records.locations[0].location[0].weatherElement[0].time[0].elementValue[1]
-        .value
-    description.value = describeData
+    const weatherElements = describeRes.data.records.locations[0].location[0].weatherElement[0].time
 
+<<<<<<< Updated upstream
     // 取得溫度
     const tempRes = await axios.get(temperatureUrl)
     const tempData = tempRes.data.records.locations[0].location[0].weatherElement[0].time
@@ -94,8 +124,59 @@ const getWeather = async () => {
 
     console.log('取得天氣API:', description.value)
     console.log('取得溫度API:', temperature.value)
+=======
+    // 當前時間
+    const now = new Date()
+
+    // 選取當前時間的天氣描述
+    const currentWeather = weatherElements.find((element) => {
+      const startTime = new Date(element.startTime)
+      const endTime = new Date(element.endTime)
+      return now >= startTime && now < endTime
+    })
+
+    // 如果找到當前時間的天氣描述，更新 description
+    if (currentWeather) {
+      description.value = currentWeather.elementValue[1].value
+      console.log('取得當前時間的天氣API:', description.value)
+    } else {
+      console.log('未找到當前時間的天氣描述')
+    }
+>>>>>>> Stashed changes
   } catch (error) {
     console.error('取得天氣錯誤:', error)
+  }
+}
+
+const fetchTemperature = async () => {
+  try {
+    const response = await fetch(temperatureUrl)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
+
+    if (data.success === 'true' && data.records && data.records.locations) {
+      const location = data.records.locations[0]
+      const weatherElement = location.location[0].weatherElement.find(
+        (element) => element.elementName === 'AT'
+      )
+
+      if (weatherElement && weatherElement.time && weatherElement.time.length > 0) {
+        const temperatures = weatherElement.time.map((t) => parseFloat(t.elementValue[0].value))
+        const maxTemp = Math.max(...temperatures)
+        const minTemp = Math.min(...temperatures)
+
+        temperature.value = `${maxTemp}°C / ${minTemp}°C`
+      } else {
+        temperature.value = '無法獲取溫度'
+      }
+    } else {
+      temperature.value = '無法獲取溫度'
+    }
+  } catch (error) {
+    console.error('獲取溫度數據時出錯:', error)
+    temperature.value = '無法獲取溫度'
   }
 }
 const AirAPI =
@@ -264,6 +345,7 @@ onMounted(() => {
     setDisplayType()
   })
   getWeather()
+  fetchTemperature()
   setInterval(() => {
     userTime.value = new Date()
   }, 1000)
@@ -271,6 +353,7 @@ onMounted(() => {
 const messages = ref(getAirData.allMessages)
 //交通資訊輪流撥放
 const cards = ['card1', 'card2', 'card3']
+<<<<<<< Updated upstream
 const currentIndex = ref(0)
 
 const next = () => {
@@ -280,6 +363,8 @@ const next = () => {
 const prev = () => {
   currentIndex.value = (currentIndex.value - 1 + cards.length) % cards.length
 }
+=======
+>>>>>>> Stashed changes
 </script>
 
 <template>
@@ -381,7 +466,11 @@ const prev = () => {
               </thead>
               <tbody class="bg-white">
                 <tr v-if="filterFlights.length === 0">
+<<<<<<< Updated upstream
                   <td colspan="5" class="text-center text-[30px] py-4 bg-slate-200">查無資料</td>
+=======
+                  <td colspan="5" class="text-center subtitle py-4 bg-slate-200">查無資料</td>
+>>>>>>> Stashed changes
                 </tr>
                 <tr
                   v-for="flightItem in filterFlights.slice(0, showMoreCount)"
@@ -444,8 +533,13 @@ const prev = () => {
           </div>
         </div>
         <!-- 天氣卡 -->
+<<<<<<< Updated upstream
         <div class="text-2xl absolute top-[22%] right-[0%]">
           <table class="w-[500px]">
+=======
+        <div class="content-text absolute top-[22%] right-[0%]">
+          <table class="w-full max-w-[500px]">
+>>>>>>> Stashed changes
             <thead class="h-[80px]">
               <tr class="airportAuxiliaryColor-2 flex justify-center items-center rounded-time">
                 <th class="text-center">
@@ -458,7 +552,11 @@ const prev = () => {
                         hourCycle: 'h23'
                       })
                     }}
+<<<<<<< Updated upstream
                     <div class="flex ml-14 items-center border-r-2 h-[20px]"></div>
+=======
+                    <div class="flex ml-12 items-center border-r-2 h-[20px]"></div>
+>>>>>>> Stashed changes
                   </div>
                 </th>
                 <th class="text-center">
@@ -485,8 +583,13 @@ const prev = () => {
             >
               <img src="/icon/announcement.png" class="w-[44px] h-[44px]" />公告資訊
             </div>
+<<<<<<< Updated upstream
             <div class="flex ml-8 relative overflow-hidden w-[750px]">
               <div class="marquee-content">
+=======
+            <div class="flex ml-8 mr-[50px] relative overflow-hidden w-[750px]">
+              <div class="marquee-content content-text">
+>>>>>>> Stashed changes
                 <div
                   v-for="(message, index) in messages"
                   :key="index"
@@ -502,8 +605,19 @@ const prev = () => {
     </div>
   </div>
   <!-- 地圖區 -->
+<<<<<<< Updated upstream
   <div class="flex w-full justify-center translate-y-[-100px] bg-white overflow-hidden">
     <img class="z-index-0" src="/image/bg-map.png" alt="" />
+=======
+  <div class="relative flex w-full justify-center translate-y-[-100px] bg-white overflow-hidden">
+    <img class="z-index-0" src="/image/bg-map.png" alt="背景地圖" />
+    <img
+      ref="planeRef"
+      class="z-10 absolute bottom-[27%] left-[48%]"
+      src="/image/plane.png"
+      alt="飛機"
+    />
+>>>>>>> Stashed changes
   </div>
   <!-- 交通資訊 -->
   <div class="flex w-full h-[490px] justify-center items-center bg-[#f6f6f6]">
@@ -557,6 +671,7 @@ const prev = () => {
     </div>
   </div>
   <!-- 搭機指南 -->
+<<<<<<< Updated upstream
   <div class="relative flex justify-center items-end w-full h-[850px] bg-[#f6f6f6]">
     <div
       class="absolute w-full max-w-[495px] h-[495px] left-0 top-10 bg-[#471C87] bg-opacity-10 rounded-r-[50px]"
@@ -564,11 +679,21 @@ const prev = () => {
     <div
       class="flex justify-between w-full max-w-[1600px] h-[700px] py-[100px] px-[60px] rounded-t-[50px] bg-white"
     >
+=======
+  <div class="flex justify-center items-end w-full h-[850px] bg-[#f6f6f6]">
+    <div
+      class="relative flex justify-between w-full max-w-[1600px] h-[700px] py-[100px] px-[60px] rounded-t-[50px] bg-white"
+    >
+      <div
+        class="absolute w-full max-w-[495px] h-[495px] left-[-200px] top-[-100px] bg-[#471C87] bg-opacity-10 rounded-r-[50px]"
+      ></div>
+>>>>>>> Stashed changes
       <div class="flex">
         <mainTitle>
           <template #title>搭機指南</template>
         </mainTitle>
       </div>
+<<<<<<< Updated upstream
       <div class="relative w-full max-w-[1200px] h-[500px] overflow-hidden">
         <div
           class="flex transition-transform duration-700 ease-in-out"
@@ -591,6 +716,16 @@ const prev = () => {
         >
           <img class="w-[28px] h-[28px]" src="/icon/guide-right-arrow.png" alt="右按鈕" />
         </button>
+=======
+      <!-- 搭機指南輪播 -->
+      <div class="relative w-full max-w-[1200px] h-[500px] items-center">
+        <announcementCarousel carousel-name="carousel1">
+          <guideCards v-for="(card, index) in cards" :key="index" :guideName="card" />
+        </announcementCarousel>
+        <div
+          class="absolute z-0 top-0 -right-1 w-[87px] h-full bg-gradient-to-r from-transparent to-white"
+        ></div>
+>>>>>>> Stashed changes
       </div>
     </div>
   </div>
@@ -622,6 +757,7 @@ const prev = () => {
             <template #title>政府公告</template>
           </mainTitle>
         </div>
+<<<<<<< Updated upstream
         <announcementCarousel>
           <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-1.png" alt="公告-1" />
           <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-2.png" alt="公告-2" />
@@ -630,6 +766,43 @@ const prev = () => {
           <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-5.png" alt="公告-5" />
           <img class="w-[450px] h-[250px] mr-4" src="/image/government-notice-6.png" alt="公告-6" />
         </announcementCarousel>
+=======
+        <!-- 旅客服務輪播 -->
+        <div class="w-full max-w-[1400px] h-[250px]">
+          <announcementCarousel carousel-name="carousel2">
+            <img
+              class="w-[450px] h-[250px] mr-4"
+              src="/image/government-notice-1.png"
+              alt="公告-1"
+            />
+            <img
+              class="w-[450px] h-[250px] mr-4"
+              src="/image/government-notice-2.png"
+              alt="公告-2"
+            />
+            <img
+              class="w-[450px] h-[250px] mr-4"
+              src="/image/government-notice-3.png"
+              alt="公告-3"
+            />
+            <img
+              class="w-[450px] h-[250px] mr-4"
+              src="/image/government-notice-4.png"
+              alt="公告-4"
+            />
+            <img
+              class="w-[450px] h-[250px] mr-4"
+              src="/image/government-notice-5.png"
+              alt="公告-5"
+            />
+            <img
+              class="w-[450px] h-[250px] mr-4"
+              src="/image/government-notice-6.png"
+              alt="公告-6"
+            />
+          </announcementCarousel>
+        </div>
+>>>>>>> Stashed changes
       </div>
     </div>
     <!-- 背景圖 -->
@@ -709,7 +882,10 @@ td {
   width: calc(100% * 3.5);
   animation: marquee 25s linear infinite;
   height: 100%;
+<<<<<<< Updated upstream
   font-size: 24px;
+=======
+>>>>>>> Stashed changes
   font-weight: bold;
 }
 .transportation-guide {

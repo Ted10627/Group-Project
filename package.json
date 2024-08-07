@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "axios": "^1.7.2",
     "body-parser": "^1.20.2",
     "element-plus": "^2.7.6",
@@ -23,6 +24,10 @@
     "pinia": "^2.2.0",
     "vue": "^3.4.29",
     "vue-carousel": "^0.18.0",
+<<<<<<< Updated upstream
+=======
+    "vue-click-outside": "^1.1.0",
+>>>>>>> Stashed changes
     "vue-router": "^4.4.0"
   },
   "devDependencies": {

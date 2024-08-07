@@ -3,6 +3,7 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
 </script>
 
 <template>
+<<<<<<< Updated upstream
   <img class="max-w-full w-auto" src="/image/banner-process.png" alt="國際線搭機流程" />
   <div class="px-5">
     <div class=" w-full max-w-[1260px] flex flex-col gap-5 lg:gap-12 m-auto py-10">
@@ -10,12 +11,31 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
       <div class="flex w-full">
         <RouterLink
           to="/process-exit"
+=======
+  <div
+    class="banner-guide w-full max-w-[1920px] max-w-auto h-[120px] sm:h-[200px] lg:h-[400px] flex items-center bg-cover"
+  >
+    <p class="text-xl font-bold sm:text-4xl lg:text-6xl w-[1260px] px-5 mx-auto text-white">
+      國際線搭機流程
+    </p>
+  </div>
+  <div class="px-5">
+    <div class="w-full max-w-[1260px] flex flex-col gap-5 lg:gap-12 m-auto py-10">
+      <div class="w-full text-sm lg:text-2xl">首頁>搭機指南>國際線搭機流程>入境流程</div>
+      <div class="flex w-full">
+        <RouterLink
+          :to="{ name: 'process-exit' }"
+>>>>>>> Stashed changes
           class="flex-1 rounded-l-[40px] shadow-xl p-2 lg:p-5 white text-xl lg:text-3xl text-[#471C87] text-center"
         >
           <button>出境</button>
         </RouterLink>
         <button
+<<<<<<< Updated upstream
           class="flex-1 rounded-r-[40px] shadow-xl p-2 lg:p-5 air-purple text-xl lg:text-3xl text-[#FFFFFF] "
+=======
+          class="flex-1 rounded-r-[40px] shadow-xl p-2 lg:p-5 air-purple text-xl lg:text-3xl text-[#FFFFFF]"
+>>>>>>> Stashed changes
         >
           入境
         </button>
@@ -44,4 +64,12 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
   </div>
 </template>
 
+<<<<<<< Updated upstream
 <style></style>
+=======
+<style>
+.banner-guide {
+  background-image: url(/public/image/banner-guide.png);
+}
+</style>
+>>>>>>> Stashed changes

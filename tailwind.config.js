@@ -13,7 +13,11 @@ export default {
         '3xl': '1.875rem',// 30px 副標題(PC)
         '4xl': '2.25rem', // 36px 大標題(PC)
         '5xl': '3rem',    // 48px
+<<<<<<< Updated upstream
         '6xl': '4rem',    // 64px
+=======
+        '6xl': '3.5rem',    // 56px
+>>>>>>> Stashed changes
       },
     },
   },
