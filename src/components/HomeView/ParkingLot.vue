@@ -24,6 +24,7 @@ const traffic = ref({
     out: ''
   }
 })
+const hover = ref(false)
 </script>
 
 <template>
@@ -40,7 +41,28 @@ const traffic = ref({
       >
         {{ traffic[props.trafficName].out }}
       </div>
-      <a class="flex items-center small-text-18 underline text-gray" href="">查看位置</a>
+      <div
+        class="relative flex border-b-2 border-[#5d5d5d]"
+        @mouseover="hover = true"
+        @mouseleave="hover = false"
+        :class="hover ? 'border-[#e1e1e1]' : 'border-[#5d5d5d]'"
+      >
+        <div
+          class="absolute left-0 bottom-0 w-full h-[40%] bg-[#FDD900]"
+          :class="hover ? 'block' : 'hidden'"
+        ></div>
+        <a
+          class="z-20 flex justify-center items-center text-sm md:text-base lg:text-lg text-[#5d5d5d]"
+          href=""
+          :class="hover ? ' text-black' : 'text-[#5d5d5d]'"
+          >查看位置
+          <img
+            class="w-[16px] h-[16px] md:w-[20px] md:h-[20px] ml-[5px]"
+            src="/icon/parking-right.png"
+            alt=""
+          />
+        </a>
+      </div>
     </div>
   </div>
 </template>

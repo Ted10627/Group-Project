@@ -15,14 +15,59 @@ const router = createRouter({
       component: () => import('../views/00-homepage/AnnouncementInformation.vue')
     },
     {
+      path: '/announcement-information2',
+      name: 'announcement-information2',
+      component: () => import('../views/00-homepage/AnnouncementInformation2.vue')
+    },
+    {
+      path: '/sitemap',
+      name: 'sitemap',
+      component: () => import('../views/00-homepage/SiteMap.vue')
+    },
+    {
+      path: '/FAQ',
+      name: 'FAQ',
+      component: () => import('../views/00-homepage/FAQ.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('../views/01-flight/AboutView.vue')
     },
     {
+      path: '/InternationalFlights',
+      name: 'InternationalFlights',
+      component: () => import('../views/01-flight/InternationalFlights.vue')
+    },
+    {
+      path: '/InternationalScheduled',
+      name: 'InternationalScheduled',
+      component: () => import('../views/01-flight/InternationalScheduled.vue')
+    },
+    {
+      path: '/DomesticFlights',
+      name: 'DomesticFlights',
+      component: () => import('../views/01-flight/DomesticFlights.vue')
+    },
+    {
+      path: '/DomesticScheduled',
+      name: 'DomesticScheduled',
+      component: () => import('../views/01-flight/DomesticScheduled.vue')
+    },
+    {
       path: '/flight',
       name: 'flight',
       component: () => import('../views/01-flight/FlightForm.vue')
+    },
+    {
+      path: '/airline',
+      name: 'airline',
+      component: () => import('../views/01-flight/Airline.vue')
+    },
+    {
+      path: '/Flight-standby-information',
+      name: 'Flight-standby-information',
+      component: () => import('../views/01-flight/FlightStandbyInformation.vue')
     },
     // 搭機指南
     {
@@ -73,26 +118,6 @@ const router = createRouter({
           path: '1f',
           name: 'floor-plan-1f',
           component: () => import('../views/03-service/FloorPlan01.vue')
-        },
-        {
-          path: '2f',
-          name: 'floor-plan-2f',
-          component: () => import('../views/03-service/FloorPlan02.vue')
-        },
-        {
-          path: '3f',
-          name: 'floor-plan-3f',
-          component: () => import('../views/03-service/FloorPlan03.vue')
-        },
-        {
-          path: '4f',
-          name: 'floor-plan-4f',
-          component: () => import('../views/03-service/FloorPlan04.vue')
-        },
-        {
-          path: 'b1',
-          name: 'floor-plan-b1',
-          component: () => import('../views/03-service/FloorPlan05.vue')
         }
       ]
     },
@@ -101,11 +126,63 @@ const router = createRouter({
       name: 'service-facilities',
       component: () => import('../views/03-service/ServiceFacilities.vue')
     },
+    // 服務設施內頁
     {
-      path: '/facility-information',
-      name: 'facility-information',
-      component: () => import('../views/03-service/FacilityInformation.vue')
+      path: '/service-facilities',
+      children: [
+        {
+          path: 'facility-information',
+          name: 'facility-information',
+          component: () => import('../views/03-service/FacilityInformation.vue')
+        },
+        {
+          path: 'financial-service',
+          name: 'financial-service',
+          component: () => import('../views/03-service/FinancialService.vue')
+        },
+        {
+          path: 'insurance-service',
+          name: 'insurance-service',
+          component: () => import('../views/03-service/InsuranceService.vue')
+        },
+        {
+          path: 'telecommunication-network',
+          name: 'telecommunication-network',
+          component: () => import('../views/03-service/TelecommunicationNetwork.vue')
+        },
+        {
+          path: 'cars-rental-service',
+          name: 'cars-rental-service',
+          component: () => import('../views/03-service/CarRentalService.vue')
+        },
+        {
+          path: 'food-stores',
+          name: 'food-stores',
+          component: () => import('../views/03-service/FoodStores.vue')
+        },
+        {
+          path: 'tourist-counter',
+          name: 'tourist-counter',
+          component: () => import('../views/03-service/TouristCounter.vue')
+        },
+        {
+          path: 'baggage-packing',
+          name: 'baggage-packing',
+          component: () => import('../views/03-service/BaggagePacking.vue')
+        },
+        {
+          path: 'storage-services',
+          name: 'storage-services',
+          component: () => import('../views/03-service/StorageServices.vue')
+        },
+        {
+          path: 'medical-service',
+          name: 'medical-service',
+          component: () => import('../views/03-service/MedicalService.vue')
+        }
+      ]
     },
+    //無障礙服務
     {
       path: '/accessible-service',
       children: [
@@ -125,6 +202,27 @@ const router = createRouter({
           component: () => import('../views/03-service/AccessiblePassengers.vue')
         }
       ]
+    },
+    {
+      path: '/baby-stroller',
+      name: 'baby-stroller',
+      component: () => import('../views/03-service/BabyStroller.vue')
+    },
+    {
+      path: '/lost-property',
+      name: 'lost-property',
+      component: () => import('../views/03-service/LostProperty.vue')
+    },
+    //旅客申訴
+    {
+      path: '/passenger-complaints',
+      name: 'passenger-complaints',
+      component: () => import('../views/03-service/PassengerComplaints.vue')
+    },
+    {
+      path: '/complaint-regulations',
+      name: 'complaint-regulations',
+      component: () => import('../views/03-service/ComplaintRegulations.vue')
     },
     // 機場交通
     {

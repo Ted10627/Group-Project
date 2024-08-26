@@ -24,12 +24,18 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="z-0 relative w-full max-w-[1720px] h-[865px] rounded-tl-bigimg overflow-hidden">
+  <div
+    class="relative z-0 w-full max-w-[1720px] rounded-tl-[50px] rounded-bl-[12px] md:rounded-bl-[0px] md:rounded-tl-[100px] lg:rounded-tl-[200px] overflow-hidden"
+  >
+    <!-- 解決輪播沒有長寬可以撐開區域，下方圖片負責空間 -->
+    <div class="w-full">
+      <img src="/image/banner-1.png" alt="" class="opacity-100" />
+    </div>
     <div
       v-for="(item, index) in items"
       :key="index"
       :class="[
-        'absolute transition-opacity duration-1000 ease-in-out w-full h-full',
+        'absolute top-0 left-0 transition-opacity duration-1000 ease-in-out w-full',
         { 'opacity-100': currentIndex === index, 'opacity-0': currentIndex !== index }
       ]"
     >
@@ -47,8 +53,5 @@ onUnmounted(() => {
 }
 .opacity-0 {
   opacity: 0 !important;
-}
-.rounded-tl-bigimg {
-  border-top-left-radius: 200px;
 }
 </style>

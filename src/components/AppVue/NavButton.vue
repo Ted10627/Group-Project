@@ -5,13 +5,26 @@ import navDownList from '@/components/AppVue/DownList.vue'
 
 const dropdownStore = useDropdownStore()
 const toggleList = (dropdownName) => {
-  dropdownStore.toggleDropdown(dropdownName)
+  if (dropdownStore.currentOpenDropdown === dropdownName) {
+    dropdownStore.closeDropdown()
+    isHovered.value = false
+  } else {
+    dropdownStore.toggleDropdown(dropdownName)
+    isHovered.value = true
+  }
 }
 
 const handleClickOutside = (event) => {
-  if (!event.target.closest('.dropdown-container') && !event.target.closest('.dropdown-list')) {
+  if (
+    (!event.target.closest('.dropdown-container') && !event.target.closest('.dropdown-list')) ||
+    event.target.closest('a')
+  ) {
     dropdownStore.closeDropdown() // 點擊空白處時關閉當前打開的下拉清單
+    isHovered.value = false
   }
+}
+const handleMouseLeave = () => {
+  isHovered.value = false
 }
 
 onMounted(() => {
@@ -29,49 +42,71 @@ const props = defineProps({
   }
 })
 
+const isHovered = ref(false) //追蹤滑鼠是否懸停在按鈕
+
 const button = ref({
   one: {
     name: '航班資訊',
     icon: '/icon/nav-airplane-takeoff.png',
+    hoverIcon: '/icon/airplane-hover.png',
     down: 'down1'
   },
   two: {
     name: '搭機指南',
     icon: '/icon/nav-luggage.png',
+    hoverIcon: '/icon/luggage-hover.png',
     down: 'down2'
   },
   three: {
     name: '機場服務',
     icon: '/icon/nav-fluent_building-people-24-filled.png',
+    hoverIcon: '/icon/building-hover.png',
     down: 'down3'
   },
   four: {
     name: '機場交通',
     icon: '/icon/nav_bus.png',
+    hoverIcon: '/icon/bus-hover.png',
     down: 'down4'
   },
   five: {
     name: '行政專區',
     icon: '/icon/nav_document-solid.png',
+    hoverIcon: '/icon/document-hover.png',
     down: 'down5'
   },
   default: {
     name: '',
     icon: '',
+    hoverIcon: '',
     down: ''
   }
 })
 </script>
 
 <template>
-  <li class="z-10 nav-button">
+  <li class="z-20 nav-button">
     <button
-      class="relative flex items-center justify-center dropdown-container w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
+      class="relative flex items-center justify-center dropdown-container w-full md:w-auto"
       type="button"
       @click="toggleList(button[props.buttonName].down)"
+      @mouseover="isHovered = true"
+      @mouseleave="handleMouseLeave"
+      :class="{
+        'active-button':
+          isHovered || dropdownStore.currentOpenDropdown === button[props.buttonName].down
+      }"
     >
-      <img :src="button[props.buttonName].icon" class="max-w-[28px] mr-3" alt="" />
-      <div class="content-text-bolded">
+      <img
+        :src="
+          isHovered || dropdownStore.currentOpenDropdown === button[props.buttonName].down
+            ? button[props.buttonName].hoverIcon
+            : button[props.buttonName].icon
+        "
+        class="button-item max-w-[28px] mr-3"
+        alt="icon"
+      />
+      <div class="content-text button-item">
         {{ button[props.buttonName].name }}
       </div>
     </button>
@@ -98,5 +133,21 @@ const button = ref({
 <style>
 .dropdown-container {
   position: relative;
+}
+.button-item {
+  color: #343557;
+}
+.dropdown-container:hover,
+.active-button {
+  color: #f59801;
+  border-bottom: 10px solid #f59801;
+  border-style: inset;
+  margin-bottom: 2px;
+  box-sizing: border-box;
+}
+.dropdown-container:hover .button-item,
+.active-button .button-item {
+  margin-top: 12px;
+  color: #f59801;
 }
 </style>

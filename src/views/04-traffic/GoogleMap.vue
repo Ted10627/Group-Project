@@ -15,7 +15,7 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
           <template #title>機場 Google Map</template>
         </mainTitle>
         <div class="map-container">
-            <iframe class="m-auto w-full h-[650px]" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3637.6514471640576!2d120.59694067504438!3d24.253966678330134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346911535f840371%3A0x586410335e8a5024!2sTaichung%20International%20Airport!5e0!3m2!1sen!2stw!4v1722651760068!5m2!1sen!2stw" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe class="m-auto w-full h-[650px]" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27465.461284817713!2d120.59585806027798!3d24.265181570268187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346911535f840371%3A0x586410335e8a5024!2sTaichung%20International%20Airport!5e0!3m2!1sen!2stw!4v1723446096535!5m2!1sen!2stw" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             <!-- width="1260" height="650" -->
         </div>
         <div class="w-full text-sm lg:text-2xl">文章最後更新日期：2024-08-03</div>

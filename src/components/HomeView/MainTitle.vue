@@ -19,15 +19,23 @@ onMounted(() => {
 </script>
 <template>
   <div>
-    <div class="headline-bolded mb-2">
+    <div class="text-xl font-bold md:text-3xl lg:text-4xl mb-1 md:mb-2">
       <span ref="headlineRef">
         <slot name="title">默認標題</slot>
       </span>
     </div>
     <div class="flex">
-      <img :style="{ width: imgWidth, height: '10px' }" src="/transportation-border-title.png" />
-      <img class="mx-[10px]" src="/transportation-border-title2.png" alt="" />
-      <img src="/transportation-border-title3.png" alt="" />
+      <img
+        :style="{ width: imgWidth }"
+        class="h-[4px] md:h-[10px]"
+        src="/transportation-border-title.png"
+      />
+      <img
+        class="mx-[4px] md:mx-[10px] h-[4px] md:h-[10px]"
+        src="/transportation-border-title2.png"
+        alt=""
+      />
+      <img class="h-[4px] md:h-[10px]" src="/transportation-border-title3.png" alt="" />
     </div>
   </div>
 </template>

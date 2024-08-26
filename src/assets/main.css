@@ -10,19 +10,3 @@ a,
   text-decoration: none;
   transition: 0.4s;
 }
-
-/* @media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    display: flex;
-    justify-content: center;
-    max-width: 1820px;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */

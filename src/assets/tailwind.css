@@ -2,15 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 /* 共通CSS */
+*{
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   padding: 0;
   font-family: 'Noto Sans TC', sans-serif;
 }
 /* 字體設計規範 */
-.headline-bolded-white{
+.headline-bolded-white {
   font-size: 3.5rem;
-  font-weight:bold;
+  font-weight: bold;
   color: #ffffff;
 }
 .headline {
@@ -19,12 +22,12 @@ body {
 }
 .headline-bolded {
   font-size: 2.25rem;
-  font-weight:500;
+  font-weight: 500;
   color: black;
 }
 .headline-bolded-puple {
   font-size: 2.25rem;
-  font-weight:500;
+  font-weight: 500;
   color: #343557;
 }
 .subtitle {
@@ -46,85 +49,109 @@ body {
 .content-text-bolded {
   font-size: 1.5rem;
   color: #343557;
-  font-weight:500;
+  font-weight: 500;
 }
 .notes {
   font-size: 1.25rem;
+  font-weight: 400;
 }
 .notes-bolded {
   font-size: 1.25rem;
   color: #343557;
-  font-weight:500;
+  font-weight: 500;
 }
 .small-text-18 {
   font-size: 1.125rem;
   text-decoration-color: #5d5d5d;
-  text-underline-offset: 5px;
 }
 .small-text {
   font-size: 1rem;
+}
+.small-text-bold {
+  font-size: 1rem;
+  font-weight: 500;
   color: #5d5d5d;
 }
 @media (max-width: 640px) {
-  .headline-bolded-white{
+  .headline-bolded-white {
     font-size: 1.25rem;
-    font-weight:200;
+    font-weight: 200;
   }
-  .headline,.headline-bolded,.headline-bolded-puple{
+  .headline,
+  .headline-bolded,
+  .headline-bolded-puple {
     font-size: 1.25rem;
   }
-  .subtitle{
+  .subtitle {
     font-size: 1.25rem;
   }
-  .content-text,.content-text-black,.content-text-white,.content-text-bolded{
+  .content-text,
+  .content-text-black,
+  .content-text-white,
+  .content-text-bolded {
     font-size: 0.875rem;
   }
-  .notes,.notes-bolded{
+  .notes,
+  .notes-bolded {
     font-size: 0.875rem;
   }
-  .small-text-18{
+  .small-text-18 {
     font-size: 0.875rem;
-
   }
 }
 
-@media (max-width: 1024px) {
-  .headline-bolded-white{
+@media (max-width: 1440px) {
+  .headline-bolded-white {
     font-size: 2.25rem;
-    font-weight:500;
+    font-weight: 500;
   }
-  .headline,.headline-bolded,.headline-bolded-puple{
+  .headline,
+  .headline-bolded,
+  .headline-bolded-puple {
     font-size: 1.875rem;
   }
-  .subtitle{
+  .subtitle {
     font-size: 1.5rem;
   }
-  .content-text,.content-text-black,.content-text-white,.content-text-bolded{
+  .content-text,
+  .content-text-black,
+  .content-text-white,
+  .content-text-bolded {
     font-size: 1.25rem;
   }
-  .notes,.notes-bolded{
+  .notes,
+  .notes-bolded {
     font-size: 1.125rem;
   }
-  .small-text-18{
+  .small-text-18 {
     font-size: 1rem;
   }
-  .small-text{
+  .small-text {
     font-size: 0.875rem;
   }
-  
+  .small-text-bold {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
 }
 /* 顏色設計規範 */
 .text-air-purple {
   color: #471c87;
 }
-.text-air-orange{
-  color: #F59801;
+.text-air-blue {
+  color: #343557;
 }
-.text-white{
+.text-air-orange {
+  color: #f59801;
+}
+.text-white {
   color: #ffffff;
 }
 .air-purple {
   background-color: #471c87;
+}
+.air-blue {
+  background-color: #343557;
 }
 .air-yellow {
   background-color: #fdd900;
@@ -132,16 +159,16 @@ body {
 .air-orange {
   background-color: #f59801;
 }
-.bg-light-gray{
-  background-color: #EFEFEF;
+.bg-light-gray {
+  background-color: #efefef;
 }
 .bg-gray {
   background-color: #f6f6f6;
 }
 .bg-dark-gray {
-  background-color:#909090;
+  background-color: #909090;
 }
-.background-light-gray{
+.background-light-gray {
   background-color: #e1e1e1;
 }
 .white {
@@ -159,7 +186,26 @@ body {
 .text-gray {
   color: #5d5d5d;
 }
+.bg-light-purple {
+  background-color: #f8f8ff;
+}
 /* 其他獨立設計 */
+.airportMainColor {
+  background-color: #471c87;
+  color: white;
+}
+.airportMainColor-hover:hover {
+  background-color: #471c87;
+  color: white;
+}
+.airportAuxiliaryColor {
+  background-color: #dedede;
+  color: black;
+}
+.airportAuxiliaryColor-2 {
+  background-color: #343557;
+  color: white;
+}
 .bus-list {
   display: flex;
   justify-content: center;
@@ -170,7 +216,4 @@ body {
 }
 .z-index-1 {
   z-index: 1;
-}
-.z-index-2 {
-  z-index: 2;
 }

@@ -8,7 +8,7 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
   </div>
   <div class="px-5 w-full">
     <div class="w-full max-w-[1260px] flex flex-col gap-5 lg:gap-12 m-auto py-10">
-      <div class="w-full text-sm lg:text-2xl">首頁>搭機指南>公車資訊</div>
+      <div class="w-full text-sm lg:text-2xl">首頁>機場交通>公車資訊</div>
       <mainTitle>
           <template #title>公車位置圖</template>
       </mainTitle>
@@ -18,46 +18,46 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
             <p class="content-text">即時公車動態資訊參考網頁</p>
             <img class="mr-5" width="20" src="/public/icon/black-park-right.png" />
             <a href="https://citybus.taichung.gov.tw/" target="_blank">
-                <img class="w-[160px]" src="/public/image/TaichungBus.png" />
+                <img class="w-[160px] lg:w-[280px]" src="/public/image/TaichungBus.png" />
             </a>
         </div>
         <mainTitle>
           <template #title>往臺中火車站</template>
         </mainTitle>
         <div class="flex w-full flex-wrap justify-start gap-x-6 gap-y-8 lg:gap-y-7">
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">500</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中國際機場</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>臺中車站</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">500延3</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>三田國小</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>臺中車站</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">500延區2</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>三田國小</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>臺中車站</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">500延區3</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>三田國小</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>臺中車站</p>
                 </div>
             </div>
@@ -66,12 +66,12 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
           <template #title>往高鐵</template>
         </mainTitle>
         <div class="flex w-full flex-wrap justify-start gap-x-6 gap-y-8 lg:gap-y-7">
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">156</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中國際機場</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>高鐵臺中站</p>
                 </div>
             </div>
@@ -80,39 +80,39 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
           <template #title>往梧棲、大雅</template>
         </mainTitle>
         <div class="flex w-full flex-wrap justify-start gap-x-6 gap-y-8 lg:gap-y-7">
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">123</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中慈濟醫院</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>梧棲觀光漁港</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">中鹿客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">128</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>大雅</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>清水</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">128區</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>大雅</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>梧棲</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">239</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>梧棲</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>豐原轉運中心</p>
                 </div>
             </div>
@@ -121,66 +121,66 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
           <template #title>往豐原</template>
         </mainTitle>
         <div class="flex w-full flex-wrap justify-start gap-x-6 gap-y-8 lg:gap-y-7">
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">182</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>清水</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>豐原轉運中心</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">183</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中港郵局</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>豐原轉運中心</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">185</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>清水</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>豐原轉運中心</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">186</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中港郵局</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>豐原轉運中心</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">237</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>大肚車站</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>豐原轉運中心</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">237區</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>麗水</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>豐原轉運中心</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">238</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中港郵局</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>豐原轉運中心</p>
                 </div>
             </div>
@@ -189,84 +189,84 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
           <template #title>其他</template>
         </mainTitle>
         <div class="flex w-full flex-wrap justify-start gap-x-6 gap-y-8 lg:gap-y-7">
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">69</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中國際機場</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>龍潭里</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">91延</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中國際機場</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>中興里停車場</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">97</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中國際機場</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>國立苑裡高中</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
-                <p class="lg:text-2xl border-b-2 border-black lg:mx-[125px] mx-[130px] p-1 lg:mt-[34px] mt-2 text-sm">中臺灣客運</p>
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
+                <p class="lg:text-2xl border-b-2 border-black lg:mx-[125px] mx-[128px] p-1 lg:mt-[34px] mt-2 text-sm">中臺灣客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">162</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>嘉陽高中</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>靜宜大學</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">豐原客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">302</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中國際機場</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>新光里(新福路)</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
-                <p class="lg:text-2xl border-b-2 border-black lg:mx-[125px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">中臺灣客運</p>
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
+                <p class="lg:text-2xl border-b-2 border-black lg:mx-[125px] mx-[128px] p-1 lg:mt-[34px] mt-2 text-sm">中臺灣客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">302延</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>嘉陽高中</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>新光里(新福路)</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">357</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中國際機場</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>中臺新村</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">臺中客運</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">500延區1</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>三田國小</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>大雅</p>
                 </div>
             </div>
-            <div class="bus-card text-center shadow-lg rounded-3xl min-w-[359px] lg:h-[247px] h-[120px] bg-white">
+            <div class="bus-card text-center shadow-lg rounded-3xl lg:h-[247px] h-[120px] bg-white">
                 <p class="lg:text-2xl border-b-2 border-black lg:mx-[138px] mx-[135px] p-1 lg:mt-[34px] mt-2 text-sm">睿奕交通</p>
                 <p class="busnumber lg:mt-[13px] mt-1 lg:text-4xl text-2xl font-bold">679</p>
                 <div class="flex items-center lg:text-2xl justify-center gap-2 lg:mt-6 mt-1 lg:p-5 p-[8px] rounded-b-3xl text-sm" style="background-color: #F8F8FF;">
                     <p>臺中國際機場</p>
-                    <iframe class="" width="25" height="10" src="/public/icon/double-arrows.png"></iframe>
+                    <img class="" width="25" height="10" src="/public/icon/double-arrows.png"></img>
                     <p>新政大安港路口</p>
                 </div>
             </div>

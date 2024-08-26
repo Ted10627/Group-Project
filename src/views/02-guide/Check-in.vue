@@ -34,15 +34,18 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
         </div>
         <div class="order-1 md:order-2 flex-1 flex flex-col justify-center gap-10 p-5 lg:p-10">
           <div>
-            <p class="text-xl lg:text-3xl text-[#471C87]">出境必備證件 :</p>
+            <p class="text-xl lg:text-3xl text-[#471C87]">國內線</p>
             <p class="text-sm lg:text-2xl">
-              旅客攜帶由政府機關核發且具有照片之身分證明文件如身分證、健保卡、護照。未滿14歲之旅客，未持有政府機關核發貼有照片之身分證明文件者，得以戶口名簿或健保卡或兒童手冊等能證明身分之文件替代之。
+              旅客攜帶由政府機關核發且具有照片之身分證明文件如身分證、健保卡、護照。
+              未滿14歲之旅客，未持有政府機關核發貼有照片之身分證明文件者，得以戶口名簿
+              或健保卡或兒童手冊等能證明身分之文件替代之。
             </p>
           </div>
           <div>
-            <p class="text-xl lg:text-3xl text-[#471C87]">出境必備證件 :</p>
+            <p class="text-xl lg:text-3xl text-[#471C87]">國際線</p>
             <p class="text-sm lg:text-2xl">
-              旅客須攜帶有效之旅行證件，如護照、簽證、檢疫文件等（視目的地不同，詳細情形請洽航空公司或旅行社），方便航空公司櫃檯人員於辦理報到手續時核對，登機時供查驗員查看。
+              旅客須攜帶有效之旅行證件，如護照、簽證、檢疫文件等（視目的地不同，詳細情形請洽航空公司或旅行社），
+              方便航空公司櫃檯人員於辦理報到手續時核對，登機時供查驗員查看。
             </p>
           </div>
         </div>

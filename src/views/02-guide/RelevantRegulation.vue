@@ -11,33 +11,33 @@
   <div class="px-5">
     <div class="w-full max-w-[1260px] flex flex-col gap-5 lg:gap-12 m-auto py-10">
       <div class="w-full text-sm lg:text-2xl">首頁>搭機指南>注意事項</div>
-      <div class="flex w-full">
+      <div class="flex flex-wrap w-full sm:flex-nowrap">
         <a
-          href="#first"
-          class="flex-1 rounded-l-[40px] shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
+          onclick="document.getElementById('first').scrollIntoView({ behavior: 'smooth' });"
+          class="w-full sm:rounded-l-[40px] shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
         >
           預訂機位
         </a>
         <a
-          href="#second"
-          class="flex-1 shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
+           onclick="document.getElementById('second').scrollIntoView({ behavior: 'smooth' });"
+          class="w-full shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
         >
           購票、退票
         </a>
         <a
-          href="#third"
-          class="flex-1 shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
+           onclick="document.getElementById('third').scrollIntoView({ behavior: 'smooth' });"
+          class="w-full shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
         >
           班機延誤
         </a>
         <a
-          href="#fourth"
-          class="flex-1 rounded-r-[40px] shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
+           onclick="document.getElementById('fourth').scrollIntoView({ behavior: 'smooth' });"
+          class="w-full sm:rounded-r-[40px] shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
         >
           攜帶貴重物品
         </a>
       </div>
-      <div id="first" class="p-5 lg:p-10 white rounded-[20px]">
+      <div id="first" class="p-5 lg:p-10 white rounded-[20px]" style="scroll-margin-top: 200px;">
         <p class="py-2 text-xl lg:text-3xl text-[#471C87]">一、預訂機位與報到注意事項</p>
         <ol class="list-decimal px-3 lg:px-5">
           <li class="text-sm lg:text-2xl">建議消費者預先訂位以便順利成行。</li>
@@ -59,7 +59,7 @@
           <li class="text-sm lg:text-2xl">為維護自身權益，請在規劃行程時，事先訂位、提早報到。</li>
         </ol>
       </div>
-      <div id="second" class="p-5 lg:p-10 white rounded-[20px]">
+      <div id="second" class="p-5 lg:p-10 white rounded-[20px]" style="scroll-margin-top: 200px;">
         <p class="py-2 text-xl lg:text-3xl text-[#471C87]">二、購票、退票注意事項</p>
         <ol class="list-decimal px-3 lg:px-5">
           <li class="text-sm lg:text-2xl">
@@ -78,7 +78,7 @@
           </li>
         </ol>
       </div>
-      <div id="third" class="p-5 lg:p-10 white rounded-[20px]">
+      <div id="third" class="p-5 lg:p-10 white rounded-[20px]" style="scroll-margin-top: 200px;">
         <p class="py-2 text-xl lg:text-3xl text-[#471C87]">三、班機延誤時航空公司應提供之服務</p>
         <ol class="list-decimal px-3 lg:px-5">
           <li class="text-sm lg:text-2xl">
@@ -137,7 +137,7 @@
           </p>
         </div>
       </div>
-      <div id="fourth" class="p-5 lg:p-10 white rounded-[20px]">
+      <div id="fourth" class="p-5 lg:p-10 white rounded-[20px]" style="scroll-margin-top: 200px;">
         <p class="py-2 text-xl lg:text-3xl text-[#471C87]">七、攜帶貴重物品應注意事項</p>
         <div class="px-3 lg:px-5">
           <p class="text-sm lg:text-2xl">
@@ -169,4 +169,8 @@
 .banner-guide {
   background-image: url(/public/image/banner-guide.png);
 }
+a{
+  cursor: pointer;
+}
+
 </style>

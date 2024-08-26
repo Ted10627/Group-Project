@@ -16,22 +16,22 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
       <mainTitle>
         <template #title>無障礙服務設施</template>
       </mainTitle>
-      <div class="flex w-full">
+      <div class="flex flex-wrap w-full xl:flex-nowrap">
         <RouterLink
           :to="{ name: 'accessible-transportation' }"
-          class="flex-1 rounded-l-[40px] shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
+          class="w-full xl:rounded-l-[40px] shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
         >
           無障礙交通設施
         </RouterLink>
         <RouterLink
           :to="{ name: 'accessible-service' }"
-          class="flex-1 shadow-xl p-2 lg:p-5 air-purple text-xs md:text-base lg:text-2xl text-[#FFFFFF] text-center"
+          class="w-full shadow-xl p-2 lg:p-5 air-purple text-xs md:text-base lg:text-2xl text-[#FFFFFF] text-center"
         >
           無障礙服務設施
         </RouterLink>
         <RouterLink
           :to="{ name: 'accessible-passengers' }"
-          class="flex-1 rounded-r-[40px] shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
+          class="w-full xl:rounded-r-[40px] shadow-xl p-2 lg:p-5 white text-xs md:text-base lg:text-2xl text-[#471C87] text-center hover:bg-[#471C87] hover:text-[#FFFFFF]"
         >
           接受行動不便旅客搭機人數一覽表
         </RouterLink>

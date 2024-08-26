@@ -8,7 +8,7 @@ import mainTitle from '@/components/HomeView/MainTitle.vue'
   </div>
   <div class="px-5 w-full">
     <div class="w-full max-w-[1260px] flex flex-col gap-5 lg:gap-12 m-auto py-10">
-      <div class="w-full text-sm lg:text-2xl">首頁>搭機指南>觀光指南</div>
+      <div class="w-full text-sm lg:text-2xl">首頁>機場交通>觀光指南</div>
       <div class="flex w-full">
         <button
           class="flex-1 rounded-l-[40px] shadow-xl p-2 lg:p-5 air-purple text-xl lg:text-3xl text-[#FFFFFF]"

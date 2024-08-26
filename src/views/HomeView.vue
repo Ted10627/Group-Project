@@ -1,6 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import { airData } from '@/stores/AirDate.js'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import autoPlayCarousel from '@/components/HomeView/AutoPlayCarousel.vue'
 import mainTitle from '@/components/HomeView/MainTitle.vue'
@@ -10,10 +9,14 @@ import parkingLot from '@/components/HomeView/ParkingLot.vue'
 import guideCards from '@/components/HomeView/GuideCards.vue'
 import service from '@/components/HomeView/ServiceOptions.vue'
 import announcementCarousel from '@/components/HomeView/AnnouncementCarousel.vue'
+import announcementTicker from '@/components/HomeView/AnnouncementTicker.vue'
 import { gsap } from 'gsap'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
+import liveFlightSchedule from '@/components/HomeView/LiveFlightSchedule.vue'
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(MotionPathPlugin)
+gsap.registerPlugin(ScrollTrigger);
 
 const planeRef = ref(null)
 
@@ -34,15 +37,18 @@ onMounted(() => {
     },
     repeat: -1,
     ease: 'linear'
-  })
+  }),
+  // 設置 ScrollTrigger
+  
+  ScrollTrigger.create({
+        trigger: '#flight-guide',
+        start: 'top top',
+        end: '+=500px',
+        pinSpacing: false,
+        pin: true
+  });
 })
-const getAirData = airData()
-// 航空公司
-const airname = ref(getAirData.allAirname)
-// 國內航線
-const domestic = ref(getAirData.allDomestic)
-// 國際航線
-const foreign = ref(getAirData.allForeign)
+
 //天氣描述
 const describeUrl =
   'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-073?Authorization=CWA-AB77557D-8FFC-412D-91D5-8D4235C1406D&limit=1&format=JSON&locationName=%E6%B2%99%E9%B9%BF%E5%8D%80&elementName=Wx'
@@ -115,178 +121,13 @@ const fetchTemperature = async () => {
     temperature.value = '無法獲取溫度'
   }
 }
-const AirAPI =
-  'https://tdx.transportdata.tw/api/basic/v2/Air/FIDS/Airport/RMQ?%24top=30&%24format=JSON'
-// 所有航班資料陣列
-const flight = ref([])
-const displayType = ref(['Arrival', 'internationalArrival', 'crossStraitArrival'])
-// 取得 API 資料
-const getAPI = async () => {
-  try {
-    // 抓取API資料給resFlights(航班資訊)
-    const cachedData = localStorage.getItem('apiData')
-    //資料日期
-    const cachedDate = localStorage.getItem('apiDate')
-    //取得當日日期
-    const todayDate = new Date().toISOString().split('T')[0]
-    let resFlights = ref([])
-    //利用localStorage給資料到cachedData，並檢查cachedData有無資料，無資料就抓給他
-    if (cachedData && cachedDate === todayDate) {
-      resFlights.value = JSON.parse(cachedData)
-    } else {
-      const response = await axios.get(AirAPI)
-      resFlights.value = response.data
-      localStorage.setItem('apiData', JSON.stringify(resFlights.value))
-      localStorage.setItem('apiDate', todayDate)
-      console.log('API 暫存資料:', resFlights.value)
-    }
-    // 確保資料存在
-    if (!Array.isArray(resFlights.value) || resFlights.value.length === 0) {
-      throw new Error('API 資料格式錯誤或無資料')
-    }
-
-    // 使用 flatMap 處理 FIDSDeparture 和 FIDSArrival
-    const departures = resFlights.value.flatMap((item) => item.FIDSDeparture || [])
-    const arrivals = resFlights.value.flatMap((item) => item.FIDSArrival || [])
-
-    // 出入境放入陣列flight(所有資料)
-    flight.value = { departures, arrivals }
-    console.log('所有航班資料:', flight.value)
-    console.log('所有出境航班資料:', flight.value.departures)
-    console.log('所有入境航班資料:', flight.value.arrivals)
-  } catch (error) {
-    console.error('獲取資料錯誤:', error)
-  }
-}
-//顯示更多
-const showMoreCount = ref(5)
-const showMore = () => {
-  showMoreCount.value += 5
-  setDisplayType()
-}
-//時間過濾航班
-const TimeFilter = (flights) => {
-  const NowTime = new Date()
-  return flights.filter((flightItem) => {
-    const FlyTime = new Date(flightItem.ScheduleDepartureTime || flightItem.ScheduleArrivalTime)
-    return FlyTime > NowTime
-  })
-}
-//用來放按鈕過濾後資料的陣列
-const filterFlights = ref([])
-//按鈕功能類別/類型
-const category = ref('')
-const nowType = ref('')
-//國際與國內
-const setCategory = (set) => {
-  category.value = set
-  showMoreCount.value = 5
-  setDisplayType()
-}
-//起飛與抵達
-const setType = (set) => {
-  nowType.value = set
-  showMoreCount.value = 5
-  setDisplayType()
-}
-//按鈕回傳分類設定
-const setDisplayType = () => {
-  //是否為國際
-  if (category.value === 'international') {
-    //是否為抵達
-    if (nowType.value === 'Arrival') {
-      displayType.value = ['Arrival']
-      filterFlights.value = TimeFilter(
-        flight.value.arrivals.filter(
-          (flight) =>
-            flight.ArrivalAirportID === 'RMQ' &&
-            foreign.value.some((place) => place.id === flight.DepartureAirportID) &&
-            (!searchQuery.value || flight.FlightNumber.includes(searchQuery.value.toUpperCase()))
-        )
-      ).slice(0, showMore.value)
-      //是否為起飛
-    } else if (nowType.value === 'Departure') {
-      displayType.value = ['Departure']
-      filterFlights.value = TimeFilter(
-        flight.value.departures.filter(
-          (flight) =>
-            flight.DepartureAirportID === 'RMQ' &&
-            foreign.value.some((place) => place.id === flight.ArrivalAirportID) &&
-            (!searchQuery.value || flight.FlightNumber.includes(searchQuery.value.toUpperCase()))
-        )
-      ).slice(0, showMore.value)
-    }
-    //是否為國內
-  } else if (category.value === 'domestic') {
-    //抵達
-    if (nowType.value === 'Arrival') {
-      displayType.value = ['Arrival']
-      filterFlights.value = TimeFilter(
-        flight.value.arrivals.filter(
-          (flight) =>
-            flight.ArrivalAirportID === 'RMQ' &&
-            domestic.value.some((place) => place.id === flight.DepartureAirportID) &&
-            (!searchQuery.value || flight.FlightNumber.includes(searchQuery.value.toUpperCase()))
-        )
-      ).slice(0, showMore.value)
-      //起飛
-    } else if (nowType.value === 'Departure') {
-      displayType.value = ['Departure']
-      filterFlights.value = TimeFilter(
-        flight.value.departures.filter(
-          (flight) =>
-            flight.DepartureAirportID === 'RMQ' &&
-            domestic.value.some((place) => place.id === flight.ArrivalAirportID) &&
-            (!searchQuery.value || flight.FlightNumber.includes(searchQuery.value.toUpperCase()))
-        )
-      ).slice(0, showMore.value)
-    }
-  }
-}
-
-// 根據 AirlineID 獲取航空公司名稱
-const getname = (AirlineID) => {
-  const airline = airname.value.find((a) => a.id === AirlineID)
-  return airline ? airline.name : '未知航空公司'
-}
-
-// 根據 ArrivalAirportID 或 DepartureAirportID 獲取地點名稱
-const getPlaceName = (airportID) => {
-  const place = [...foreign.value, ...domestic.value].find((a) => a.id === airportID)
-  return place ? place.name : '未知地點'
-}
-
-//這是時間格式設定
-const formatTime = (time) => {
-  return time ? time.substring(11, 16) : '---'
-}
-//搜尋
-const searchQuery = ref('')
-watch(
-  searchQuery,
-  () => {
-    setDisplayType()
-  },
-  { immediate: true }
-)
-const searchFlights = () => {
-  setType(nowType.value)
-  setDisplayType()
-}
-
 onMounted(() => {
-  getAPI().then(() => {
-    category.value = 'international'
-    nowType.value = 'Arrival'
-    setDisplayType()
-  })
   getWeather()
   fetchTemperature()
   setInterval(() => {
     userTime.value = new Date()
   }, 1000)
 })
-const messages = ref(getAirData.allMessages)
 //交通資訊輪流撥放
 const cards = ['card1', 'card2', 'card3']
 </script>
@@ -294,171 +135,25 @@ const cards = ['card1', 'card2', 'card3']
 <template>
   <div class="flex w-full justify-center bg-white">
     <div class="flex w-full max-w-[1720px] justify-center">
-      <div class="relative flex justify-center w-full h-[916px]">
-        <!-- 圖片切換區 -->
+      <div class="relative flex w-full justify-center">
         <autoPlayCarousel />
         <!-- 航空資訊 -->
         <div
-          class="absolute w-full max-w-[1080px] top-[70%] left-[22%] text-2xl shadow-md z-index-2"
+          class="absolute w-full lg:max-w-[1080px] bottom-[32%] left-2/5 content-text shadow-md z-index-2 hidden lg:block"
         >
-          <div class="flex">
-            <button
-              type="button"
-              @click="setCategory('international')"
-              :class="[category === 'international' ? 'airportMainColor' : 'airportAuxiliaryColor']"
-              class="hover:airportMainColor rounded-tl-my flight-button"
-            >
-              國際及兩岸航線
-            </button>
-            <button
-              type="button"
-              @click="setCategory('domestic')"
-              :class="[category === 'domestic' ? 'airportMainColor' : 'airportAuxiliaryColor']"
-              class="hover:airportMainColor rounded-tr-my flight-button"
-            >
-              國內航線
-            </button>
-          </div>
-          <div v-if="category" class="flex items-center mt-2">
-            <button
-              @click="setType('Arrival')"
-              :class="[nowType === 'Arrival' ? 'airportMainColor' : 'bg-white']"
-              class="hover:airportMainColor flight-button"
-            >
-              <div class="flex justify-center items-center">
-                <img
-                  :src="[
-                    nowType === 'Arrival'
-                      ? '/icon/airplane-landing.png'
-                      : '/icon/airplane-landing-ch.png'
-                  ]"
-                />
-                抵達
-              </div>
-            </button>
-
-            <button
-              @click="setType('Departure')"
-              :class="[nowType === 'Departure' ? 'airportMainColor' : 'bg-white']"
-              class="hover:airportMainColor flight-button"
-            >
-              <div class="flex justify-center items-center">
-                <img
-                  :src="[
-                    nowType === 'Departure'
-                      ? '/icon/airplane-takeoff.png'
-                      : '/icon/airplane-takeoff-ch.png'
-                  ]"
-                />
-                起飛
-              </div>
-            </button>
-            <div
-              class="relative p-5 airportAuxiliaryColor w-[500px] h-[110px] flex items-center border"
-            >
-              <input
-                v-model="searchQuery"
-                type="text"
-                placeholder="搜尋航班編號"
-                class="p-2 airportAuxiliaryColor flex-1 h-[60px] w-[460px] border-width border-2 rounded"
-              />
-              <img
-                src="/icon/search.png"
-                class="w-[40px] h-[40px] cursor-pointer absolute right-10"
-                @click="searchFlights"
-              />
-            </div>
-          </div>
-          <div v-if="nowType" class="mt-2">
-            <table class="w-full border-collapse">
-              <thead class="h-[65px]">
-                <tr class="airportAuxiliaryColor-2">
-                  <th class="text-center from-items-1">
-                    <div class="flex justify-center items-center border-r-2">時間</div>
-                  </th>
-                  <th class="text-center from-items-2">
-                    <div class="flex justify-center items-center border-r-2">班機編號</div>
-                  </th>
-                  <th v-if="displayType.includes('Arrival')" class="text-center from-items-1">
-                    <div class="flex justify-center items-center border-r-2">出發地</div>
-                  </th>
-                  <th v-if="displayType.includes('Departure')" class="text-center from-items-1">
-                    <div class="flex justify-center items-center border-r-2">目的地</div>
-                  </th>
-                  <th class="text-center">狀態</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white">
-                <tr v-if="filterFlights.length === 0">
-                  <td colspan="5" class="text-center subtitle py-4 bg-slate-200">查無資料</td>
-                </tr>
-                <tr
-                  v-for="flightItem in filterFlights.slice(0, showMoreCount)"
-                  :key="flightItem.FlightNumber"
-                  class="border shadow-md p-2 h-[65px]"
-                  :class="{
-                    'text-red-600':
-                      flightItem.ArrivalRemark === '延誤' ||
-                      flightItem.ArrivalRemark === '取消' ||
-                      flightItem.DepartureRemark === '延誤' ||
-                      flightItem.DepartureRemark === '取消',
-                    'text-black': !(
-                      flightItem.ArrivalRemark === '延誤' ||
-                      flightItem.ArrivalRemark === '取消' ||
-                      flightItem.DepartureRemark === '延誤' ||
-                      flightItem.DepartureRemark === '取消'
-                    )
-                  }"
-                >
-                  <!-- 表定到達時間 -->
-                  <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
-                    {{ formatTime(flightItem.ScheduleArrivalTime) }}
-                  </td>
-                  <!-- 表定出發時間 -->
-                  <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
-                    {{ formatTime(flightItem.ScheduleDepartureTime) }}
-                  </td>
-                  <td class="from-items-2">
-                    <div class="flex items-center justify-center">
-                      <img
-                        :src="`https://www.tca.gov.tw/upload/webstyle_7_default/img/air_logo/${flightItem.AirlineID}.png`"
-                        alt="logo"
-                        class="w-5 h-5"
-                      />
-                      <span class="ml-2">{{ getname(flightItem.AirlineID) }}</span>
-                      <span class="ml-2"
-                        >{{ flightItem.AirlineID }}-{{ flightItem.FlightNumber }}</span
-                      >
-                    </div>
-                  </td>
-                  <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
-                    {{ getPlaceName(flightItem.DepartureAirportID) }}
-                  </td>
-                  <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
-                    {{ getPlaceName(flightItem.ArrivalAirportID) }}
-                  </td>
-                  <td v-if="displayType.includes('Arrival')" class="text-center from-items-1">
-                    {{ flightItem.ArrivalRemark }}
-                  </td>
-                  <td v-if="displayType.includes('Departure')" class="text-center from-items-1">
-                    {{ flightItem.DepartureRemark }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="flex justify-center items-center bg-white bg-opacity-50 h-[80px]">
-              <button @click="showMore" class="h-[40px]">顯示更多航班</button>
-              <img src="/icon/park-right.png" alt="" />
-            </div>
-          </div>
+          <liveFlightSchedule></liveFlightSchedule>
         </div>
+        <!-- 公告區 -->
+        <announcementTicker></announcementTicker>
         <!-- 天氣卡 -->
-        <div class="content-text absolute top-[22%] right-[0%]">
+        <div class="content-text absolute top-[22%] right-0 hidden lg:block">
           <table class="w-full max-w-[500px]">
             <thead class="h-[80px]">
-              <tr class="airportAuxiliaryColor-2 flex justify-center items-center rounded-time">
+              <tr
+                class="shadow-[-6px_5px_10px_rgba(255,255,255,0.5)] airportAuxiliaryColor-2 flex justify-center items-center rounded-time"
+              >
                 <th class="text-center">
-                  <div class="flex justify-center items-center from-items-1 h-[25px]">
+                  <div class="pl-[30px] flex justify-center items-center w-[250px] h-[25px]">
                     台中
                     {{
                       userTime.toLocaleTimeString('zh-TW', {
@@ -471,7 +166,7 @@ const cards = ['card1', 'card2', 'card3']
                   </div>
                 </th>
                 <th class="text-center">
-                  <div class="flex justify-center items-center">
+                  <div class="flex justify-center items-center pr-[30px]">
                     {{ temperature }}
                     <div class="flex h-[80px] items-center ml-3">
                       <img
@@ -486,33 +181,16 @@ const cards = ['card1', 'card2', 'card3']
             </thead>
           </table>
         </div>
-        <!-- 公告區 -->
-        <div class="text-2xl absolute top-[5%] left-[20%]">
-          <div class="flex w-full max-w-[1080px] h-[80px] announcement shadow-xl">
-            <div
-              class="flex justify-center items-center w-full max-w-[220px] announcement-title content-text"
-            >
-              <img src="/icon/announcement.png" class="w-[44px] h-[44px]" />公告資訊
-            </div>
-            <div class="flex ml-8 mr-[50px] relative overflow-hidden w-[750px]">
-              <div class="marquee-content content-text">
-                <div
-                  v-for="(message, index) in messages"
-                  :key="index"
-                  class="flex items-center min-w-[100%]"
-                >
-                  {{ message }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
   <!-- 地圖區 -->
-  <div class="relative flex w-full justify-center translate-y-[-100px] bg-white overflow-hidden">
-    <img class="z-index-0" src="/image/bg-map.png" alt="背景地圖" />
+  <div 
+    class="relative w-full justify-center lg:translate-y-[-100px] bg-white lg:overflow-hidden hidden lg:block"
+  >
+    <div class="flex justify-center">
+      <img class="z-index-0" src="/image/bg-map.png" alt="背景地圖" />
+    </div>
     <img
       ref="planeRef"
       class="z-10 absolute bottom-[27%] left-[48%]"
@@ -520,92 +198,135 @@ const cards = ['card1', 'card2', 'card3']
       alt="飛機"
     />
   </div>
+  <!-- 地圖區手機板 -->
+  <div class="w-full px-[8px] py-[40px] md:pt-20 md:p-[35px] block lg:hidden bg-white">
+    <mainTitle class="mb-[20px]">
+      <template #title>本日航班搜索</template>
+    </mainTitle>
+    <div class="w-full">
+      <liveFlightSchedule></liveFlightSchedule>
+    </div>
+  </div>
   <!-- 交通資訊 -->
-  <div class="flex w-full h-[490px] justify-center items-center bg-[#f6f6f6]">
-    <div class="w-full max-w-[1400px] h-[370px]">
-      <div class="mb-[50px] w-full h-[70px]">
-        <mainTitle>
-          <template #title>交通資訊</template>
-        </mainTitle>
-      </div>
-      <div class="flex justify-between w-full h-[300px]">
-        <!-- 公車班次 -->
-        <div class="flex-1 border-r border-gray-500">
-          <div class="bus-list">
-            <div class="flex flex-col justify-center">
-              <trafficButton traffic-name="bus"></trafficButton>
-              <busInformation traffic-name="bus1"></busInformation>
-              <busInformation traffic-name="bus2"></busInformation>
-              <busInformation traffic-name="bus3"></busInformation>
-              <busInformation traffic-name="bus4"></busInformation>
+  <div class="z-10 flex w-full justify-center items-center bg-[#f6f6f6]">
+    <div class="w-full max-w-[1600px] p-[8px] md:p-[35px] lg:px-[100px] flex flex-col gap-10">
+      <mainTitle>
+        <template #title>交通資訊</template>
+      </mainTitle>
+      <div class="w-full max-w-[1400px]">
+        <div class="w-full flex flex-col xl:flex-row xl:h-[300px] gap-10 xl:gap-0 p-2">
+          <div class="flex flex-col h-full sm:flex-row basis-8/12 gap-10 sm:gap-0">
+            <div class="flex-1 sm:border-r border-black">
+              <div class="bus-list">
+                <div class="flex flex-col justify-center">
+                  <trafficButton traffic-name="bus" class="mb-5"></trafficButton>
+                  <busInformation traffic-name="bus1"></busInformation>
+                  <busInformation traffic-name="bus2"></busInformation>
+                  <busInformation traffic-name="bus3"></busInformation>
+                  <busInformation traffic-name="bus4"></busInformation>
+                </div>
+              </div>
+            </div>
+            <!-- 其他交通 -->
+            <div class="flex-1">
+              <div class="bus-list">
+                <div class="flex flex-col justify-center">
+                  <trafficButton traffic-name="taxi"></trafficButton>
+                  <trafficButton traffic-name="car" class="mt-2 sm:mt-8"></trafficButton>
+                  <trafficButton traffic-name="pin" class="mt-2 sm:mt-8"></trafficButton>
+                  <trafficButton traffic-name="map" class="mt-2 sm:mt-8"></trafficButton>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- 其他交通 -->
-        <div class="flex-1">
-          <div class="bus-list">
-            <div class="flex flex-col justify-center">
-              <trafficButton traffic-name="speedRail"></trafficButton>
-              <trafficButton traffic-name="taxi"></trafficButton>
-              <trafficButton traffic-name="car"></trafficButton>
-              <trafficButton traffic-name="pin"></trafficButton>
+          <!-- 停車場資訊 -->
+          <div class="flex-1 flex justify-center mt-[20px] lg:mt-0">
+            <div
+              class="flex-col w-full h-full py-[20px] px-5 2xl:px-[60px] background-light-gray rounded-[20px] text-xl md:text-2xl font-bold"
+            >
+              <div class="flex items-center w-full">
+                <div class="flex">停車場</div>
+                <div class="flex h-full justify-center items-center">
+                  <img
+                    class="w-[20px] h-[20px] md:w-[24px] md:h-[24px] ml-2"
+                    src="/icon/page-right.png"
+                    alt="icon"
+                  />
+                </div>
+              </div>
+              <div class="flex xl:flex-col flex-wrap">
+                <parkingLot traffic-name="state1" class="mr-10"></parkingLot>
+                <parkingLot traffic-name="state2"></parkingLot>
+              </div>
             </div>
-          </div>
-        </div>
-        <!-- 停車場資訊 -->
-        <div class="flex-1">
-          <div
-            class="flex-col w-full h-full py-[20px] px-[60px] background-light-gray rounded-[20px] content-text-black"
-          >
-            <div class="flex items-center w-full h-[44px]">
-              停車場<img
-                class="flex max-w-[24px] w-full h-[24px] ml-2"
-                src="/icon/page-right.png"
-                alt="icon"
-              />
-            </div>
-            <parkingLot traffic-name="state1"></parkingLot>
-            <parkingLot traffic-name="state2"></parkingLot>
           </div>
         </div>
       </div>
     </div>
   </div>
   <!-- 搭機指南 -->
-  <div class="flex justify-center items-end w-full h-[850px] bg-[#f6f6f6]">
+  <div id="flight-guide"
+    class="flex lg:justify-center lg:items-end w-full h-[550px] md:h-[600px] lg:h-[850px] bg-[#f6f6f6]"
+  >
     <div
-      class="relative flex justify-between w-full max-w-[1600px] h-[700px] py-[100px] px-[60px] rounded-t-[50px] bg-white"
+      class="relative flex-col lg:justify-between w-full max-w-[1600px] lg:h-[700px] p-2 lg:pr-[35px] md:p-[35px] lg:p-[100px] lg:rounded-t-[50px] bg-white"
     >
       <div
-        class="absolute w-full max-w-[495px] h-[495px] left-[-200px] top-[-100px] bg-[#471C87] bg-opacity-10 rounded-r-[50px]"
+        class="hidden lg:block absolute w-full max-w-[495px] lg:h-[495px] left-[-200px] top-[-100px] bg-[#471C87] bg-opacity-10 rounded-r-[50px]"
       ></div>
-      <div class="flex">
+      <div class="my-[20px]">
         <mainTitle>
           <template #title>搭機指南</template>
         </mainTitle>
       </div>
       <!-- 搭機指南輪播 -->
-      <div class="relative w-full max-w-[1200px] h-[500px] items-center">
-        <announcementCarousel carousel-name="carousel1">
-          <guideCards v-for="(card, index) in cards" :key="index" :guideName="card" />
-        </announcementCarousel>
+      <div class="flex justify-center lg:justify-end w-full">
         <div
-          class="absolute z-0 top-0 -right-1 w-[87px] h-full bg-gradient-to-r from-transparent to-white"
-        ></div>
+          class="relative w-full lg:max-w-[1200px] justify-center items-center mr-[30px] hidden lg:block"
+        >
+          <announcementCarousel carousel-name="carousel1">
+            <guideCards v-for="(card, index) in cards" :key="index" :guideName="card" />
+          </announcementCarousel>
+          <div
+            class="hidden lg:block absolute z-0 top-0 -right-1 w-[87px] h-full bg-gradient-to-r from-transparent to-white"
+          ></div>
+        </div>
+        <!-- 搭機指南平板版輪播 -->
+        <div
+          class="relative w-full lg:max-w-[1200px] justify-center items-center mr-[30px] hidden md:block lg:hidden"
+        >
+          <announcementCarousel carousel-name="lg1">
+            <guideCards v-for="(card, index) in cards" :key="index" :guideName="card" />
+          </announcementCarousel>
+          <div
+            class="hidden md:block lg:hidden absolute z-0 top-0 -right-1 w-[87px] h-full bg-gradient-to-r from-transparent to-white"
+          ></div>
+        </div>
+        <!-- 搭機指南手機版輪播 -->
+        <div
+          class="relative w-full sm:max-w-[1200px] justify-center items-center mr-[30px] block md:hidden"
+        >
+          <announcementCarousel carousel-name="sm1">
+            <guideCards v-for="(card, index) in cards" :key="index" :guideName="card" />
+          </announcementCarousel>
+          <div
+            class="block md:hidden absolute z-0 top-0 -right-1 w-[87px] h-full bg-gradient-to-r from-transparent to-white"
+          ></div>
+        </div>
       </div>
     </div>
   </div>
   <!-- 旅客服務專區 -->
-  <div class="relative flex justify-center w-full h-[1450px] py-[150px]">
-    <div class="w-full max-w-[1600px] h-full bg-white z-10">
-      <div class="flex-1 w-full h-[50%] z-10 px-[110px] py-[100px]">
-        <div class="mb-[80px]">
+  <div class="relative flex justify-center w-full lg:h-[1450px] lg:py-[150px]">
+    <div class="w-full max-w-[1600px] lg:h-full bg-white z-10">
+      <div class="flex-1 w-full lg:h-[50%] z-10 p-[8px] md:p-[35px] lg:p-[100px]">
+        <div class="mb-[20px] lg:mb-[80px]">
           <mainTitle>
             <template #title>旅客服務專區</template>
           </mainTitle>
         </div>
-        <div class="flex justify-between w-full content-text">
-          <div class="flex-col flex w-full mr-[80px]">
+        <div class="flex justify-between w-full text-[#4C4E93] text-sm font-bold md:text-2xl">
+          <div class="flex-col flex w-full mr-[20px] lg:mr-[80px]">
             <service service-name="s1"></service>
             <service service-name="s2"></service>
             <service service-name="s3"></service>
@@ -617,49 +338,161 @@ const cards = ['card1', 'card2', 'card3']
           </div>
         </div>
       </div>
-      <div class="flex-1 w-full h-[50%] z-10 px-[110px] py-[100px]">
-        <div class="mb-[80px]">
+      <div class="flex-1 w-full lg:h-[50%] z-10 p-[5px] lg:p-[100px]">
+        <div class="mb-[20px] lg:mb-[80px]">
           <mainTitle>
             <template #title>政府公告</template>
           </mainTitle>
         </div>
-        <!-- 旅客服務輪播 -->
-        <div class="w-full max-w-[1400px] h-[250px]">
+        <!-- 政府公告輪播 -->
+        <div class="w-full max-w-[1400px] lg:h-[250px] hidden md:block pr-3">
           <announcementCarousel carousel-name="carousel2">
-            <img
-              class="w-[450px] h-[250px] mr-4"
-              src="/image/government-notice-1.png"
-              alt="公告-1"
-            />
-            <img
-              class="w-[450px] h-[250px] mr-4"
-              src="/image/government-notice-2.png"
-              alt="公告-2"
-            />
-            <img
-              class="w-[450px] h-[250px] mr-4"
-              src="/image/government-notice-3.png"
-              alt="公告-3"
-            />
-            <img
-              class="w-[450px] h-[250px] mr-4"
-              src="/image/government-notice-4.png"
-              alt="公告-4"
-            />
-            <img
-              class="w-[450px] h-[250px] mr-4"
-              src="/image/government-notice-5.png"
-              alt="公告-5"
-            />
-            <img
-              class="w-[450px] h-[250px] mr-4"
-              src="/image/government-notice-6.png"
-              alt="公告-6"
-            />
+            <div>
+              <a href="https://www.immigration.gov.tw/5385/7244/7250/7317/%E5%85%B6%E4%BB%96/30112/">
+                <picture>
+                  <img
+                    class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                    src="/image/government-notice-1.png"
+                    alt="公告-1"
+                    type="button"
+                  />
+                </picture>
+              </a>
+            </div>
+<div>
+  <a href="https://aoaws.anws.gov.tw/AWS/index.php">
+ <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-2.png"
+                alt="公告-2"
+              />
+            </picture>
+  </a>
+</div>
+<div>
+  <a href="https://asf.aphia.gov.tw/">
+            <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-3.png"
+                alt="公告-3"
+              />
+            </picture>
+  </a>
+</div>
+<div>
+  <a href="https://www.humanrights.moj.gov.tw/">
+    <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-4.png"
+                alt="公告-4"
+              />
+            </picture>
+  </a>
+</div>
+<div>
+  <a href="https://5000.taiwan.net.tw/index.html">
+    <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-5.png"
+                alt="公告-5"
+              />
+            </picture>
+  </a>
+</div>            
+            <div>
+              <a href="https://www.taiwan.net.tw/">
+                <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-6.png"
+                alt="公告-6"
+              />
+            </picture>
+              </a>
+            </div>
+            
+          </announcementCarousel>
+        </div>
+        <!-- 手機版政府公告輪播 -->
+        <div class="w-full max-w-[1400px] lg:h-[250px] block md:hidden pr-3">
+          <announcementCarousel carousel-name="lg2">
+              <div>
+              <a href="https://www.immigration.gov.tw/5385/7244/7250/7317/%E5%85%B6%E4%BB%96/30112/">
+                <picture>
+                  <img
+                    class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                    src="/image/government-notice-1.png"
+                    alt="公告-1"
+                    type="button"
+                  />
+                </picture>
+              </a>
+            </div>
+<div>
+  <a href="https://aoaws.anws.gov.tw/AWS/index.php">
+ <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-2.png"
+                alt="公告-2"
+              />
+            </picture>
+  </a>
+</div>
+<div>
+  <a href="https://asf.aphia.gov.tw/">
+            <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-3.png"
+                alt="公告-3"
+              />
+            </picture>
+  </a>
+</div>
+<div>
+  <a href="https://www.humanrights.moj.gov.tw/">
+    <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-4.png"
+                alt="公告-4"
+              />
+            </picture>
+  </a>
+</div>
+<div>
+  <a href="https://5000.taiwan.net.tw/index.html">
+    <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-5.png"
+                alt="公告-5"
+              />
+            </picture>
+  </a>
+</div>            
+            <div>
+              <a href="https://www.taiwan.net.tw/">
+                <picture>
+              <img
+                class="min-w-[288px] h-[164px] md:min-w-[450px] md:h-[250px] mb-5 mr-4 border border-gray-300 rounded-[20px] shadow-md"
+                src="/image/government-notice-6.png"
+                alt="公告-6"
+              />
+            </picture>
+              </a>
+            </div>
+            
           </announcementCarousel>
         </div>
       </div>
     </div>
+
     <!-- 背景圖 -->
     <img
       class="absolute w-full h-full top-0 left-0 object-cover object-center z-0"
@@ -678,18 +511,6 @@ td {
   padding: 8px;
 }
 
-.airportMainColor {
-  background-color: #471c87;
-  color: white;
-}
-.airportAuxiliaryColor {
-  background-color: #dedede;
-  color: black;
-}
-.airportAuxiliaryColor-2 {
-  background-color: #343557;
-  color: white;
-}
 .rounded-tl-my {
   border-top-left-radius: 50px;
 }
@@ -704,23 +525,13 @@ td {
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
 }
-.flight-button {
-  width: 290px;
-  height: 110px;
-}
 
-.from-items-1 {
-  width: 250px;
-  height: 80px;
-}
-.from-items-2 {
-  width: 330px;
-  height: 80px;
-}
 .announcement-title {
   background-color: #f59801;
   color: white;
   border-radius: 80px;
+  padding: 0;
+  margin: 0;
 }
 .announcement {
   background-color: white;
@@ -748,27 +559,6 @@ td {
   background-color: #f6f6f6;
 }
 
-@keyframes marquee {
-  0%,
-  12.5% {
-    transform: translateX(100%);
-  }
-  25%,
-  37.5% {
-    transform: translateX(0%);
-  }
-  50%,
-  62.5% {
-    transform: translateX(-100%);
-  }
-  75%,
-  87.5% {
-    transform: translateX(-200%);
-  }
-  100% {
-    transform: translateX(-300%);
-  }
-}
 .carousel-button {
   position: absolute;
   top: 50%;

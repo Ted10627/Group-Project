@@ -40,14 +40,14 @@ function hideImage() {
         </div>
         <div class="flex flex-col gap-3">
           <p class="text-xl lg:text-3xl font-bold text-[#471C87]">> 申請退稅地點</p>
-          <div class="flex">
-            <img class="w-max mr-2" src="/icon/ph_map-pin-fill.png" alt="" />
-            <a @click.prevent="showImage" href="#" class="text-sm lg:text-2xl text-blue-500"
+          <div class="flex items-center">
+            <img class="w-7 h-7 mr-2" src="/icon/foot-map-pin.png" alt="" />
+            <a @click.prevent="showImage" href="#" class="text-sm lg:text-2xl text-air-purple hover:text-[#f59801]"
               >國際航廈1樓之海關「外籍旅客退稅服務台」</a
             >
           </div>
-          <div class="flex">
-            <img class="w-max mr-2" src="/icon/bi_telephone-fill.png" alt="" />
+          <div class="flex items-center">
+            <img class="w-8 h-8 mr-2" src="/icon/purple-phone.png" alt="" />
             <p class="text-sm lg:text-2xl">(04) 26155019 / (04) 26155022</p>
           </div>
         </div>

@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import {} from 'vue-router'
 
 const props = defineProps({
   downName: {
@@ -43,50 +44,51 @@ const navDown = ref({
 
 const content = ref({
   down1_1: [
-    { text: '即時航班', href: '' },
-    { text: '定期航班', href: '' },
-    { text: '航空公司', href: '' }
+    { text: '即時航班', href: '/InternationalFlights' },
+    { text: '定期航班', href: '/InternationalScheduled' },
+    { text: '航空公司', href: '/airline' }
   ],
   down1_2: [
-    { text: '即時航班', href: '' },
-    { text: '定期航班', href: '' },
-    { text: '航空公司', href: '' },
-    { text: '國內線候補資訊', href: '' }
+    { text: '即時航班', href: '/DomesticFlights' },
+    { text: '定期航班', href: '/DomesticScheduled' },
+    { text: '航空公司', href: '/airline' },
+    { text: '國內線候補資訊', href: '/Flight-standby-information' }
   ],
   down2_1: [
-    { text: '搭機流程', href: '' },
-    { text: '報到及通關', href: '' },
-    { text: '搭機安全須知', href: '' },
-    { text: '票價優惠說明', href: '' }
+    { text: '搭機流程', href: '/flight-process/exit' },
+    { text: '報到及通關', href: '/check-in' },
+    { text: '搭機安全須知', href: '/security-notice' },
+    { text: '票價優惠說明', href: '/concession-ticket' }
   ],
   down2_2: [
-    { text: '注意事項', href: '' },
-    { text: '外籍旅客購物退稅須知', href: '' },
+    { text: '注意事項', href: '/relevant-regulation' },
+    { text: '外籍旅客購物退稅須知', href: '/tax-refund' },
     { text: '來往兩岸港澳地區須知', href: '' },
     { text: '國際線出入境虛擬導覽', href: '' }
   ],
   down3_1: [
-    { text: '機場導覽圖', href: '' },
-    { text: '服務設施', href: '' },
-    { text: '無障礙服務', href: '' },
-    { text: '遺失物查詢', href: '' },
-    { text: '服務電話', href: '' }
+    { text: '機場導覽圖', href: '/floor-plan/1f' },
+    { text: '服務設施', href: '/service-facilities' },
+    { text: '無障礙服務', href: '/accessible-service/transportation' },
+    { text: '嬰兒車借用', href: '/baby-stroller' },
+    { text: '遺失物查詢', href: '/lost-property' }
   ],
   down3_2: [
-    { text: '旅客申訴專區', href: '' },
+    { text: '服務電話', href: '' },
+    { text: '旅客申訴專區', href: '/passenger-complaints' },
     { text: '線上問卷與建議', href: '' },
     { text: '線上申辦', href: '' },
     { text: '表單下載', href: '' }
   ],
   down4_1: [
-    { text: '機場位置', href: '' },
-    { text: '停車資訊', href: '' },
-    { text: '計程車服務', href: '' }
+    { text: '機場位置', href: '/google-map' },
+    { text: '停車資訊', href: '/parking-lot' },
+    { text: '計程車服務', href: '/taxi-service' }
   ],
   down4_2: [
-    { text: '租車服務', href: '' },
-    { text: '公車資訊', href: '' },
-    { text: '觀光指南', href: '' }
+    { text: '租車服務', href: '/car-rental-service' },
+    { text: '公車資訊', href: '/bus-information' },
+    { text: '觀光指南', href: '/sightseeing-guide' }
   ],
   down5_1: [
     { text: '機場簡介', href: '' },
@@ -119,49 +121,53 @@ const content = ref({
     <div class="flex w-full notes">
       <img
         :src="navDown[props.downName].img"
-        class="flex w-[555px] h-[250px] mr-[73px]"
+        class="flex w-[400px] h-[180px] 2xl:w-[555px] 2xl:h-[250px] mr-[73px]"
         alt="img"
       />
       <div class="flex-1 h-full mr-[24px]">
         <div
           v-if="props.downName === 'down1'"
-          class="w-full content-text text-air-orange border-b-[1px] border-[#F59801]"
+          class="w-full content-text text-air-orange border-b-[1px] border-[#F59801] mb-5"
         >
           國際及兩岸航班
         </div>
         <div v-if="content[`${props.downName}_1`]">
-          <a
+          <router-link
             v-for="(item, index) in content[`${props.downName}_1`]"
             :key="index"
-            :href="item.href"
-            class="flex items-center mt-[10px]"
+            :to="item.href"
+            class="flex items-center py-[5px] downlist-button"
           >
             <img class="flex w-[20px] h-[20px]" src="/icon/black-park-right.png" alt="arrow" />
             <div class="flex w-full">{{ item.text }}</div>
-          </a>
+          </router-link>
         </div>
       </div>
       <div class="flex-1 h-full">
         <div
           v-if="props.downName === 'down1'"
-          class="w-full content-text text-air-orange border-b-[1px] border-[#F59801]"
+          class="w-full content-text text-air-orange border-b-[1px] border-[#F59801] mb-5"
         >
           國內航班
         </div>
         <div v-if="content[`${props.downName}_2`]">
-          <a
+          <router-link
             v-for="(item, index) in content[`${props.downName}_2`]"
             :key="index"
-            :href="item.href"
-            class="flex items-center mt-[10px]"
+            :to="item.href"
+            class="flex items-center py-[5px] downlist-button"
           >
             <img class="flex w-[20px] h-[20px]" src="/icon/black-park-right.png" alt="arrow" />
             <div class="flex w-full">{{ item.text }}</div>
-          </a>
+          </router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.downlist-button:hover {
+  background-color: #e1e1e1;
+}
+</style>

@@ -11,60 +11,77 @@ const traffic = ref({
   bus: {
     icon: '/icon/bxs-bus.png',
     name: '公車路線',
-    click: ''
-  },
-  speedRail: {
-    icon: '/icon/high-speed-train.png',
-    name: '轉乘高鐵',
-    click: ''
+    to: '/bus-information',
+    hover: '/icon/hover-bus.png'
   },
   taxi: {
     icon: '/icon/taxi.png',
     name: '計程車服務',
-    click: ''
+    to: '/taxi-service',
+    hover: '/icon/hover-taxi.png'
   },
   car: {
     icon: '/icon/car.png',
     name: '租車服務',
-    click: ''
+    to: '/car-rental-service',
+    hover: '/icon/hover-car.png'
   },
   pin: {
     icon: '/icon/map-pin-fill.png',
     name: '機場位置',
-    click: ''
+    to: '/google-map',
+    hover: '/icon/hover-map-pin.png'
+  },
+  map: {
+    icon: '/icon/map-bold.png',
+    name: '觀光指南',
+    to: '/sightseeing-guide',
+    hover: '/icon/hover-map-bold.png'
   },
   default: {
     icon: '',
     name: '',
-    click: ''
+    to: '',
+    hover: ''
   }
 })
+const hover = ref(false)
 </script>
 
 <template>
-  <button :click="traffic[props.trafficName].click">
+  <router-link  
+    @mouseover="hover = true"
+    @mouseleave="hover = false"
+    @mousedown="hover = true" 
+    @mouseup="hover = false" 
+    @focus="hover = true" 
+    @blur="hover = false" 
+    :to="traffic[props.trafficName].to">
+   
     <div
-      class="flex w-[280px] h-[50px] mt-[20px] rounded-full justify-between items-center bg-white"
+      class="flex w-[280px] h-[44px] md:h-[50px] rounded-full justify-between items-center bg-white hover:bg-[#f59801] hover:text-white"
     >
       <slot name="left-icon">
         <img
-          class="flex w-[30px] h-[30px] ml-[28px]"
-          :src="traffic[props.trafficName].icon"
+          class="flex w-[20px] h-[20px] md:w-[30px] md:h-[30px] ml-[28px]"
+          :src="hover ? traffic[props.trafficName].hover : traffic[props.trafficName].icon"
           alt="left icon"
         />
       </slot>
       <slot name="text">
-        <div class="flex content-text-black">{{ traffic[props.trafficName].name }}</div>
+        <div class="flex text-sm font-medium md:text-xl lg:text-2xl">
+          {{ traffic[props.trafficName].name }}
+        </div>
       </slot>
       <slot name="right-icon">
         <img
-          class="flex w-[30px] h-[30px] mr-[28px]"
-          src="/icon/black-park-right.png"
+          class="flex w-[20px] h-[20px] md:w-[30px] md:h-[30px] mr-[28px]"
+          :src="hover ? '/icon/hover-right.png' : '/icon/black-park-right.png'"
           alt="right icon"
         />
       </slot>
     </div>
-  </button>
+  </router-link>
 </template>
 
 <style scoped></style>
